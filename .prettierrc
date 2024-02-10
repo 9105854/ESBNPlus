@@ -1,0 +1,12 @@
+{
+	"overrides": [
+		{
+			"files": "*.tera",
+			"options": {
+				"parser": "html"
+			}
+
+			
+		}
+	]
+}

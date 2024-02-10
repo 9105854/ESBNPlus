@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>{% block title %}{% endblock title %}ESRB Plus</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="assets/main.css" rel="stylesheet" />
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  </head>
+  <body hx-boost="true" class="grid grid-cols-10">
+    <nav>
+      <span class="text-2xl">ESRB Plus</span>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/browse">Browse</a></li>
+        <input
+          hx-get="/search"
+          type="text"
+          name="q"
+          class="w-full border-stone-900 border-2 rounded-lg"
+        />
+        <li><a href="/auth/login">Log In</a></li>
+      </ul>
+    </nav>
+    <main class="col-span-9">{% block content %} {% endblock content %}</main>
+  </body>
+</html>

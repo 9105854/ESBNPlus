@@ -1,1 +1,6 @@
-
+{% extends "base" %}
+{% block title %}Home - {% endblock title %}
+{% block content %}
+    <h1 class="text-8xl text-center">ESRB Plus</h1>
+{% endblock content %}
+</html>
