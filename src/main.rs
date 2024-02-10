@@ -1,34 +1,22 @@
+mod auth;
+mod utils;
+
 #[macro_use]
 extern crate rocket;
 use std::time::Duration;
 
-use rocket::{
-    fs::FileServer,
-    response::{self, Responder},
-    Request,
-};
+use auth::{login, login_ui, signup, signup_ui};
+use rocket::fs::FileServer;
 use rocket_dyn_templates::{context, Template};
-use sqlx::{sqlite::SqlitePoolOptions, SqliteConnection, SqlitePool};
-#[derive(Debug)]
-struct AppError(anyhow::Error);
-impl<E> From<E> for AppError
-where
-    E: Into<anyhow::Error>,
-{
-    fn from(error: E) -> Self {
-        AppError(error.into())
-    }
-}
+use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
+use utils::AppError;
 
-impl<'r> Responder<'r, 'static> for AppError {
-    fn respond_to(self, request: &Request<'_>) -> response::Result<'static> {
-        response::Debug(self.0).respond_to(request)
-    }
+pub struct SqliteState {
+    pool: SqlitePool,
 }
-
 #[get("/")]
-fn index() -> Template {
-    Template::render("index", context![])
+fn index() -> Result<Template, AppError> {
+    Ok(Template::render("index", context![]))
 }
 #[launch]
 async fn rocket() -> _ {
@@ -42,8 +30,8 @@ async fn rocket() -> _ {
         .expect("Couldn't connect to db");
     let assets_server = FileServer::from("assets");
     rocket::build()
-        .mount("/", routes![index])
+        .mount("/", routes![index, login_ui, signup_ui, login, signup])
         .mount("/assets", assets_server)
-        .manage(pool)
+        .manage(SqliteState { pool })
         .attach(Template::fairing())
 }

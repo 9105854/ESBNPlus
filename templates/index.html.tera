@@ -1,6 +1,9 @@
 {% extends "base" %}
 {% block title %}Home - {% endblock title %}
 {% block content %}
-    <h1 class="text-8xl text-center">ESRB Plus</h1>
+<div class="h-full flex justify-center flex-col">
+    
+    <h1 class="text-9xl font-extrabold text-center ">ESRB Plus</h1>
+</div>
 {% endblock content %}
 </html>

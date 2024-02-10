@@ -4,15 +4,15 @@
     <title>{% block title %}{% endblock title %}ESRB Plus</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link href="assets/main.css" rel="stylesheet" />
+    <link href="/assets/main.css" rel="stylesheet" />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
   </head>
-  <body hx-boost="true" class="grid grid-cols-8 gap-4 pt-2">
+  <body hx-boost="true" class="grid grid-cols-8 gap-4">
     <nav
       class="px-2 mx-auto h-screen border-r-4 border-r-emerald-500 rounded-lg sticky top-0"
     >
       <div class="w-10/12 h-full mx-auto grid grid-rows-3 justify-between">
-        <span class="text-3xl text-center">ESRB Plus</span>
+        <span class="text-3xl text-center pt-4">ESRB Plus</span>
         <ul
           class="text-emerald-800 text-xl flex flex-col justify-center gap-y-3"
         >
@@ -28,7 +28,7 @@
         <div>
           <a
             href="/auth/login"
-            class="text-emerald-800 text-xl hover:underline absolute bottom-0"
+            class="text-emerald-800 text-xl hover:underline absolute bottom-5"
             >Log In</a
           >
         </div>
