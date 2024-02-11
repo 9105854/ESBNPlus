@@ -7,10 +7,13 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1.0.79"
+argon2 = { version = "0.5.3", features=["std"]}
 env_logger = "0.11.1"
 log = "0.4.20"
-rocket = "0.5.0"
+rocket = { version = "0.5.0", features = ["secrets"]}
 rocket_dyn_templates = { version = "0.1.0", features = ["tera"] }
+serde = "1.0.196"
+serde_json = "1.0.113"
 sqlx = { version = "0.7.3", features = ["sqlite", "runtime-tokio", "macros"] }
 tera = "1.19.1"
 uuid = { version = "1.7.0", features = ["v4"]}

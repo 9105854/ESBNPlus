@@ -3,7 +3,7 @@ use rocket::{
     Request,
 };
 #[derive(Debug)]
-pub struct AppError(anyhow::Error);
+pub struct AppError(pub anyhow::Error);
 impl<E> From<E> for AppError
 where
     E: Into<anyhow::Error>,

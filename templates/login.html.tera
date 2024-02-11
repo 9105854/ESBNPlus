@@ -7,5 +7,9 @@ content %}
   <label for="password">Password</label>
   <input type="password" name="password" id="password" />
   <button type="submit">Log In</button>
+  <span>Don't have an account? </span
+  ><a href="/auth/signup" class="text-emerald-500 hover:underline"
+    >Click Here!</a
+  >
 </form>
 {% endblock content %}
