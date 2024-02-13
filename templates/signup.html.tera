@@ -1,7 +1,7 @@
 {% extends "base" %} {% block title %}Sign Up - {% endblock title %} {% block
 content %}
 <h1>Sign Up</h1>
-<form hx-post="/auth/signup" hx-target="#errors" hx-swap="innerHtml">
+<form hx-post="/auth/signup" hx-target="#response" hx-swap="innerHtml">
   <label for="email">Email</label>
   <input type="email" name="email" id="email" />
   <label for="username">Username</label>
@@ -19,6 +19,6 @@ content %}
     <option value="casual"></option>
   </select>
   <button type="submit">Sign Up</button>
+<div id="response"></div>
 </form>
-<div id="errors"></div>
 {% endblock content %}

@@ -1,15 +1,17 @@
 {% extends "base" %} {% block title %}Log In - {% endblock title %} {% block
 content %}
 <h1>Log In</h1>
-<form hx-post="/auth/login">
+<form hx-post="/auth/login" hx-target="#response" hx-swap="innerHtml">
   <label for="email">Email</label>
   <input type="email" name="email" id="email" />
   <label for="password">Password</label>
   <input type="password" name="password" id="password" />
   <button type="submit">Log In</button>
-  <span>Don't have an account? </span
+<div id="response">
+</div>
+ </form>
+<span>Don't have an account? </span
   ><a href="/auth/signup" class="text-emerald-500 hover:underline"
     >Click Here!</a
   >
-</form>
-{% endblock content %}
+  {% endblock content %}
