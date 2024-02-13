@@ -1,34 +1,64 @@
 use crate::utils::AppError;
 use crate::SqliteState;
+use anyhow::anyhow;
 use argon2::{
     password_hash::{rand_core::OsRng, SaltString},
     Argon2, PasswordHash, PasswordHasher, PasswordVerifier,
 };
-use rocket::{form::Form, request::{FromRequest, self}, Request};
-use rocket::http::Header;
-use rocket::http::{CookieJar, Status};
-use rocket::response::Redirect;
-use rocket::State;
-use rocket_dyn_templates::{context, Template};
-use sqlx::SqlitePool;
+use rocket::{
+    form::Form,
+    request::{self, FromRequest},
+    response::Redirect,
+    Request,
+};
+use rocket::{http::Header, request::Outcome};
+use rocket::{
+    http::{CookieJar, Status},
+    response::content::RawHtml,
+};
+use rocket::{Route, State};
+use rocket_dyn_templates::context;
+use rocket_dyn_templates::Template;
+pub fn auth_routes() -> Vec<Route> {
+    routes![
+        already_auth_login,
+        login_ui,
+        login,
+        already_auth_signup,
+        signup_ui,
+        signup,
+        logout_ui,
+        logout
+    ]
+}
 pub struct User {
-    user_id: String
+    user_id: String,
 }
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {
-    type Error = AppError;   
+    type Error = AppError;
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-       todo!() 
+        let user_id = req.cookies().get_private("user_id");
+        if let Some(user_id) = user_id {
+            return Outcome::Success(User {
+                user_id: user_id.value_trimmed().into(),
+            });
+        } else {
+            return Outcome::Forward(Status::Unauthorized);
+        }
     }
-} 
+}
 #[derive(Responder)]
-struct AuthResponder {
+pub struct AuthResponder {
     inner: String,
     hx_retarget: Header<'static>,
 }
-
 #[get("/auth/login")]
-pub fn login_ui() -> Template {
+pub fn already_auth_login(user: User) -> Redirect {
+    Redirect::to(uri!("/auth/logout"))
+}
+#[get("/auth/login", rank = 2)]
+pub fn login_ui(cookies: &CookieJar<'_>) -> Template {
     Template::render("login", context![])
 }
 #[derive(FromForm, Debug)]
@@ -36,13 +66,23 @@ pub struct Login {
     email: String,
     password: String,
 }
-#[post("/auth/login", data = "<login>")]
+
+#[post("/auth/login", data = "<login>", rank = 2)]
 pub async fn login(
     login: Form<Login>,
     sqlite_state: &State<SqliteState>,
     cookies: &CookieJar<'_>,
 ) -> Result<AuthResponder, AppError> {
+    // check if already signed in
+    if cookies.get_private("user_id").is_some() {
+        return Err(anyhow!(
+            r#"<span>Already logged in!</span>
+            Log out <a href="/auth/logout">here</a>"#
+        )
+        .into());
+    }
     // check email
+
     let error_msg = "<span>Email or password is incorrect</span>".to_string();
 
     let mut error_response = AuthResponder {
@@ -86,8 +126,11 @@ pub async fn login(
     };
     Ok(success_response)
 }
-
 #[get("/auth/signup")]
+pub fn already_auth_signup(user: User) -> Redirect {
+    Redirect::to(uri!("/auth/logout"))
+}
+#[get("/auth/signup", rank = 2)]
 pub fn signup_ui() -> Template {
     Template::render("signup", context![])
 }
@@ -164,3 +207,18 @@ pub async fn signup(
     };
     Ok(success)
 }
+
+#[delete("/auth/logout")]
+pub fn logout(cookies: &CookieJar<'_>) -> Redirect {
+    cookies.remove_private("user_id");
+    Redirect::to(uri!("/auth/login"))
+}
+#[get("/auth/logout")]
+pub fn logout_ui(user: User) -> Template {
+    Template::render("logout", context![])
+}
+#[get("/auth/logout", rank = 2)]
+pub fn logout_ui_no_auth() -> Redirect {
+    Redirect::to(uri!("/auth/login"))
+}
+// TODO: Add profile page to side bar when authed

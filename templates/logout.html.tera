@@ -1,0 +1,5 @@
+{% extends "base" %} {% block title %}Log Out - {% endblock title %} {% block
+content %}
+<h1>Log Out</h1>
+<button type="button" hx-delete="/auth/logout" hx-target="body">Log Out</button>
+{% endblock content %}

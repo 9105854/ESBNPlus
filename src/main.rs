@@ -5,7 +5,11 @@ mod utils;
 extern crate rocket;
 use std::time::Duration;
 
-use auth::{login, login_ui, signup, signup_ui};
+use auth::auth_routes;
+use auth::{
+    already_auth_login, already_auth_signup, login, login_ui, logout, logout_ui, logout_ui_no_auth,
+    signup, signup_ui,
+};
 use rocket::fs::FileServer;
 use rocket_dyn_templates::{context, Template};
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
@@ -30,7 +34,21 @@ async fn rocket() -> _ {
         .expect("Couldn't connect to db");
     let assets_server = FileServer::from("assets");
     rocket::build()
-        .mount("/", routes![index, login_ui, signup_ui, login, signup])
+        .mount(
+            "/",
+            routes![
+                index,
+                already_auth_login,
+                login_ui,
+                login,
+                already_auth_signup,
+                signup_ui,
+                signup,
+                logout_ui,
+                logout,
+                logout_ui_no_auth,
+            ],
+        )
         .mount("/assets", assets_server)
         .manage(SqliteState { pool })
         .attach(Template::fairing())
