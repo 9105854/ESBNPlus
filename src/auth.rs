@@ -5,6 +5,7 @@ use argon2::{
     password_hash::{rand_core::OsRng, SaltString},
     Argon2, PasswordHash, PasswordHasher, PasswordVerifier,
 };
+use rocket::http::{CookieJar, Status};
 use rocket::{
     form::Form,
     request::{self, FromRequest},
@@ -12,14 +13,10 @@ use rocket::{
     Request,
 };
 use rocket::{http::Header, request::Outcome};
-use rocket::{
-    http::{CookieJar, Status},
-    response::content::RawHtml,
-};
 use rocket::{Route, State};
 use rocket_dyn_templates::context;
 use rocket_dyn_templates::Template;
-pub fn auth_routes() -> Vec<Route> {
+pub fn _auth_routes() -> Vec<Route> {
     routes![
         already_auth_login,
         login_ui,
@@ -198,7 +195,7 @@ pub async fn signup(
     // private cookies cannot be inspected, tampered with, or manufactured by clients
     cookies.add_private(("user_id", uuid));
 
-    let mut success = AuthResponder {
+    let success = AuthResponder {
         inner: "Signed Up! Go to <a href=\"/browse\"> browse</a>".into(),
         hx_retarget: Header {
             name: "HX-Retarget".into(),
