@@ -26,12 +26,17 @@
           />
         </ul>
         <div>
+          {% if user_id is undefined%}
           <a
             href="/auth/login"
             class="text-emerald-800 text-xl hover:underline absolute bottom-5"
             >Log In</a
           >
-        </div>
+          {% else %}
+          
+          <a href="/auth/logout">Log Out</a>       
+          {% endif %}
+ </div>
       </div>
     </nav>
     <main class="col-span-7">{% block content %} {% endblock content %}</main>

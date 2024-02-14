@@ -11,6 +11,7 @@ use auth::{
     signup, signup_ui,
 };
 use rocket::fs::FileServer;
+use rocket::http::{Cookie, CookieJar};
 use rocket_dyn_templates::{context, Template};
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use utils::AppError;
@@ -19,8 +20,12 @@ pub struct SqliteState {
     pool: SqlitePool,
 }
 #[get("/")]
-fn index() -> Result<Template, AppError> {
-    Ok(Template::render("index", context![]))
+fn index(cookies: &CookieJar<'_>) -> Result<Template, AppError> {
+    let user_id = cookies.get_private("user_id").map(|e| {
+        let value = e.value_trimmed();
+        value.to_string()
+    });
+    Ok(Template::render("index", context![user_id]))
 }
 #[launch]
 async fn rocket() -> _ {

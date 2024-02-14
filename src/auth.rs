@@ -215,10 +215,10 @@ pub fn logout(cookies: &CookieJar<'_>) -> Redirect {
 }
 #[get("/auth/logout")]
 pub fn logout_ui(user: User) -> Template {
-    Template::render("logout", context![])
+    let user_id = user.user_id;
+    Template::render("logout", context![user_id])
 }
 #[get("/auth/logout", rank = 2)]
 pub fn logout_ui_no_auth() -> Redirect {
     Redirect::to(uri!("/auth/login"))
 }
-// TODO: Add profile page to side bar when authed
