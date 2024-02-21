@@ -1,0 +1,17 @@
+{% for game in results %}
+
+<div>
+  <span>{{ game.game_title }}</span>
+  <div id="stats">
+    <label for="igdb_rating">IGDB Rating</label>
+    <span id="igdb_rating">{{ game.igdb_rating }}</span>
+    <label for="publisher">Publisher</label>
+    <span id="publisher">{{ game.publisher }}</span>
+    <label for="aggregate_rating">Aggregate Rating</label>
+    <span id="aggregate_rating">{{ game.aggregate_rating }}</span>
+    <label for="release_year">Release Year</label>
+    <span id="release_year">{{ game.release_year }}</span>
+    <img src="{{ game.esrb_img }}" alt="{{ game.esrb_rating }}" />
+  </div>
+</div>
+{% endfor %}

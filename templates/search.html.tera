@@ -1,0 +1,13 @@
+{% extends "base" %} {% block title %}Search - {% endblock title %} {% block
+content %}
+<h1>Search</h1>
+<form hx-get="/search" hx-target="#results" hx-push-url="true">
+  <input type="text" name="q" value="" />
+</form>
+<h2>Results</h2>
+<section id="results">
+  {% include "search_results" %}
+  <section></section>
+</section>
+
+{% endblock content %}
