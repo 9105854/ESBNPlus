@@ -6,4 +6,3 @@
     <h1 class="text-9xl font-extrabold text-center ">ESRB Plus</h1>
 </div>
 {% endblock content %}
-</html>

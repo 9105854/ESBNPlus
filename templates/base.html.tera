@@ -18,12 +18,13 @@
         >
           <li><a href="/" class="hover:underline">Home</a></li>
           <li><a href="/browse" class="hover:underline">Browse</a></li>
-          <input
-            hx-get="/search"
-            type="text"
-            name="q"
-            class="w-full border-stone-900 border-2 rounded-lg"
-          />
+          <form action="/search" method="GET">
+            <input
+              type="text"
+              name="q"
+              class="w-full border-stone-900 border-2 rounded-lg"
+            />
+          </form>
         </ul>
         <div>
           {% if user_id is undefined%}
@@ -33,10 +34,10 @@
             >Log In</a
           >
           {% else %}
-          
-          <a href="/auth/logout">Log Out</a>       
+
+          <a href="/auth/logout">Log Out</a>
           {% endif %}
- </div>
+        </div>
       </div>
     </nav>
     <main class="col-span-7">{% block content %} {% endblock content %}</main>

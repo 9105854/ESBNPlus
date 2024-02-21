@@ -14,7 +14,7 @@ use reqwest::header;
 use rocket::fs::FileServer;
 use rocket::http::CookieJar;
 use rocket_dyn_templates::{context, Template};
-use search::simple_search;
+use search::{base_search_ui, hx_search, simple_search};
 use serde::Deserialize;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use utils::AppError;
@@ -91,7 +91,9 @@ async fn rocket() -> _ {
         logout_ui,
         logout,
         logout_ui_no_auth,
-        simple_search
+        simple_search,
+        base_search_ui,
+        hx_search
     ];
     rocket::build()
         .mount("/", routes)
