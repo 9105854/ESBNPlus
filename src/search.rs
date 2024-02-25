@@ -1,10 +1,10 @@
-use crate::utils::{AppError, ESRBRating, HXRequest};
-use chrono::prelude::*;
-use chrono::serde::ts_seconds_option;
+use crate::api_helpers::{
+    process_esrb, process_rating, process_release_year, AgeRating, InvolvedCompany,
+};
+use crate::utils::{AppError, HXRequest};
 use rocket::State;
 use rocket_dyn_templates::{context, Template};
 use serde::{Deserialize, Serialize};
-use tera::Context;
 #[derive(Deserialize, Debug)]
 struct SearchResponse {
     id: u64,
@@ -15,19 +15,7 @@ struct SearchResponse {
     involved_companies: Option<Vec<InvolvedCompany>>,
     age_ratings: Option<Vec<AgeRating>>,
 }
-#[derive(Deserialize, Debug)]
-struct AgeRating {
-    category: u16,
-    rating: u16,
-}
-#[derive(Deserialize, Debug)]
-struct InvolvedCompany {
-    company: Company,
-}
-#[derive(Deserialize, Debug)]
-struct Company {
-    name: String,
-}
+
 #[derive(Serialize, Debug)]
 struct SearchResult {
     game_title: String,
@@ -63,46 +51,16 @@ async fn search_logic(q: &str, client: &reqwest::Client) -> Result<Vec<SearchRes
     let mut results: Vec<SearchResult> = Vec::new();
     for entity in response.into_iter() {
         let game_title = entity.name;
-        let igdb_rating = entity
-            .rating
-            .map(|e| e.to_string())
-            .unwrap_or("N/A".to_string());
+        let igdb_rating = process_rating(entity.rating);
         let publisher = if let Some(involved_companies) = entity.involved_companies {
             involved_companies[0].company.name.clone()
         } else {
             "N/A".to_string()
         };
-        let aggregate_rating = entity
-            .aggregated_rating
-            .map(|e| e.to_string())
-            .unwrap_or("N/A".to_string());
+        let aggregate_rating = process_rating(entity.aggregated_rating);
 
-        let release_year = if let Some(release_year) = entity.first_release_date {
-            let parsed_date = chrono::DateTime::from_timestamp(release_year, 0);
-            if let Some(parsed_date) = parsed_date {
-                parsed_date.year().to_string()
-            } else {
-                "N/A".to_string()
-            }
-        } else {
-            "N/A".to_string()
-        };
-        let mut esrb_rating = "N/A".to_string();
-
-        let mut esrb_img = "".to_string();
-        if let Some(age_ratings) = entity.age_ratings {
-            let rating_number = age_ratings
-                .iter()
-                .filter(|rating| rating.category == 1) // Gets only ESRB Rating
-                .next();
-            if let Some(rating_number) = rating_number {
-                let esrb_classification = ESRBRating::from_number(rating_number.rating);
-                if let Some(esrb_classification) = esrb_classification {
-                    esrb_img = esrb_classification.to_img_url();
-                    esrb_rating = esrb_classification.to_string();
-                }
-            }
-        }
+        let release_year = process_release_year(entity.first_release_date);
+        let (esrb_rating, esrb_img) = process_esrb(entity.age_ratings);
         let result = SearchResult {
             game_title,
             igdb_rating,
@@ -120,7 +78,7 @@ async fn search_logic(q: &str, client: &reqwest::Client) -> Result<Vec<SearchRes
 pub async fn hx_search(
     q: &str,
     client: &State<reqwest::Client>,
-    hx_request: HXRequest,
+    _hx_request: HXRequest,
 ) -> Result<Template, AppError> {
     let results = search_logic(q, client).await?;
     Ok(Template::render("search_results", context![results]))

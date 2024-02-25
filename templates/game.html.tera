@@ -1,0 +1,47 @@
+{% extends "base" %} {% block title %}{{ title }}{% endblock title %}
+
+<img src="{{ cover_img_url }}" alt="{{ cover_img_alt }}" />
+<h1>{{ title }}</h1>
+<div id="stats">
+  <img src="{{ esrb_img_url }}" alt="{{ esrb_img_alt }}" />
+  <label for="igdb_rating">IGDB Rating</label>
+  <span id="igdb_rating">{{ igdb_rating }}</span>
+  <label for="publisher">Publisher</label>
+  <span id="publisher">{{ publisher }}</span>
+  <label for="aggregate_rating">Aggregate Rating</label>
+  <span id="aggregate_rating">{{ aggregate_rating }}</span>
+  <label for="release_year">Release Year</label>
+  <span id="release_year">{{ release_year }}</span>
+</div>
+<h2>ESRB Content Ratings</h2>
+<table>
+  <tr>
+    <th>Violence</th>
+    <th>Language</th>
+    <th>Sexual Content</th>
+    <th>Substances</th>
+    <th>Gambling</th>
+  </tr>
+  <tr>
+    <td>{{ violence }}</td>
+    <td>{{ language }}</td>
+    <td>{{ sexual_content }}</td>
+    <td>{{ substances }}</td>
+    <td>{{ gambling }}</td>
+  </tr>
+</table>
+<h2>User Ratings</h2>
+<table>
+  <tr>
+    <th>Enjoyability</th>
+    <th>Educational Value</th>
+    <th>Replayability</th>
+    <th>Usability</th>
+  </tr>
+  <tr>
+    <td>{{ enjoyability }}</td>
+    <td>{{ educational_value }}</td>
+    <td>{{ replayability }}</td>
+    <td>{{ usability }}</td>
+  </tr>
+</table>

@@ -1,4 +1,6 @@
+mod api_helpers;
 mod auth;
+mod game;
 mod search;
 mod utils;
 
@@ -51,26 +53,30 @@ async fn rocket() -> _ {
     let client_id = std::env::var("CLIENT_ID").expect("Couldn't find Client ID");
     let client_secret = std::env::var("CLIENT_SECRET").expect("Couldn't find Client Secret");
     let assets_server = FileServer::from("assets");
-    let client = reqwest::ClientBuilder::new().build().unwrap();
-    let response = client
-        .post("https://id.twitch.tv/oauth2/token")
-        .query(&[
-            ("client_id", &client_id),
-            ("client_secret", &client_secret),
-            ("grant_type", &"client_credentials".to_string()),
-        ])
-        .send()
-        .await
-        .expect("Wasn't able to retrieve access token")
-        .json::<IGDBAuth>()
-        .await
-        .expect("Couldn't parse access response");
+    let auth_token = std::env::var("AUTH_TOKEN").expect("Couldn't find AUTH token");
+    // let client = reqwest::ClientBuilder::new()
+    //     .danger_accept_invalid_certs(true)
+    //     .build()
+    //     .unwrap();
+    // let response = client
+    //     .post("https://id.twitch.tv/oauth2/token")
+    //     .query(&[
+    //         ("client_id", &client_id),
+    //         ("client_secret", &client_secret),
+    //         ("grant_type", &"client_credentials".to_string()),
+    //     ])
+    //     .send()
+    //     .await
+    //     .expect("Wasn't able to retrieve access token")
+    //     .json::<IGDBAuth>()
+    //     .await
+    //     .expect("Couldn't parse access response");
     let mut headers = header::HeaderMap::new();
     headers.insert(
         "Client-ID",
         header::HeaderValue::from_str(&client_id).unwrap(),
     );
-    let auth_header = format!("Bearer {}", response.access_token);
+    let auth_header = format!("Bearer {}", auth_token);
     headers.insert(
         header::AUTHORIZATION,
         header::HeaderValue::from_str(&auth_header).unwrap(),
