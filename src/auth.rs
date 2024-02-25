@@ -51,11 +51,11 @@ pub struct AuthResponder {
     hx_retarget: Header<'static>,
 }
 #[get("/auth/login")]
-pub fn already_auth_login(user: User) -> Redirect {
+pub fn already_auth_login(_user: User) -> Redirect {
     Redirect::to(uri!("/auth/logout"))
 }
 #[get("/auth/login", rank = 2)]
-pub fn login_ui(cookies: &CookieJar<'_>) -> Template {
+pub fn login_ui(_cookies: &CookieJar<'_>) -> Template {
     Template::render("login", context![])
 }
 #[derive(FromForm, Debug)]
@@ -82,7 +82,7 @@ pub async fn login(
 
     let error_msg = "<span>Email or password is incorrect</span>".to_string();
 
-    let mut error_response = AuthResponder {
+    let error_response = AuthResponder {
         inner: error_msg,
         hx_retarget: Header {
             name: "HX-Retarget".into(),
@@ -124,7 +124,7 @@ pub async fn login(
     Ok(success_response)
 }
 #[get("/auth/signup")]
-pub fn already_auth_signup(user: User) -> Redirect {
+pub fn already_auth_signup(_user: User) -> Redirect {
     Redirect::to(uri!("/auth/logout"))
 }
 #[get("/auth/signup", rank = 2)]
@@ -174,7 +174,7 @@ pub async fn signup(
         is_error = true;
     }
 
-    let mut error_response = AuthResponder {
+    let error_response = AuthResponder {
         inner: errors,
         hx_retarget: Header {
             name: "HX-Retarget".into(),

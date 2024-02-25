@@ -12,6 +12,7 @@ use auth::{
     already_auth_login, already_auth_signup, login, login_ui, logout, logout_ui, logout_ui_no_auth,
     signup, signup_ui,
 };
+use game::game_ui;
 use reqwest::header;
 use rocket::fs::FileServer;
 use rocket::http::CookieJar;
@@ -99,7 +100,8 @@ async fn rocket() -> _ {
         logout_ui_no_auth,
         simple_search,
         base_search_ui,
-        hx_search
+        hx_search,
+        game_ui
     ];
     rocket::build()
         .mount("/", routes)
