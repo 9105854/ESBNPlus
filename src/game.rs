@@ -1,6 +1,6 @@
 use crate::{
-    api_helpers::{process_rating, AgeRating, InvolvedCompany},
-    utils::AppError,
+    api_helpers::{process_esrb, process_rating, AgeRating, InvolvedCompany},
+    utils::{AppError, ESRBRating},
 };
 use rocket::State;
 use rocket_dyn_templates::{context, Template};
@@ -63,6 +63,14 @@ pub async fn game_ui(id: u64, client: &State<reqwest::Client>) -> Result<Templat
     let response = &response[0];
     let title = response.name.to_string();
     let cover_img_url = response.cover.unwrap_or("".to_string()).image_id;
+    let cover_img_alt = format!("Cover art for the game {title}");
+    let (esrb_img_alt, esrb_img_url) = process_esrb(response.age_ratings);
+    let igdb_rating = process_rating(response.rating);
+    let publisher = if let Some(involved_companies) = entity.involved_companies {
+        involved_companies[0].company.name.clone()
+    } else {
+        "N/A".to_string()
+    };
     let aggregate_rating = process_rating(response.aggregated_rating);
     Ok(Template::render("index", context![]))
 }

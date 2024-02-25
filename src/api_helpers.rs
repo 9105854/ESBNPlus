@@ -34,6 +34,7 @@ pub struct AgeRating {
     pub category: u16,
     pub rating: u16,
 }
+/// Returns the esrb rating text and image url in tuple (esrb_rating, esrb_img)
 pub fn process_esrb(input: Option<Vec<AgeRating>>) -> (String, String) {
     let mut esrb_rating = "N/A".to_string();
 
