@@ -45,6 +45,7 @@ impl ESRBRating {
             _ => None,
         }
     }
+    /// Gives the matching ESRB rating url for each rating
     pub fn to_img_url(&self) -> String {
         let base_string = "https://www.esrb.org/wp-content/uploads/2019/05/";
         let suffix = match self {
