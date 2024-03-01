@@ -18,13 +18,14 @@ struct SearchResponse {
 
 #[derive(Serialize, Debug)]
 struct SearchResult {
+    id: String,
     game_title: String,
     igdb_rating: String,
     publisher: String,
     aggregate_rating: String,
     release_year: String,
     esrb_rating: String,
-    esrb_img: String,
+    esrb_img: Option<String>,
 }
 
 #[get("/search", rank = 3)]
@@ -61,7 +62,9 @@ async fn search_logic(q: &str, client: &reqwest::Client) -> Result<Vec<SearchRes
 
         let release_year = process_release_year(entity.first_release_date);
         let (esrb_rating, esrb_img) = process_esrb(entity.age_ratings);
+        let id = entity.id.to_string();
         let result = SearchResult {
+            id,
             game_title,
             igdb_rating,
             publisher,
@@ -70,6 +73,7 @@ async fn search_logic(q: &str, client: &reqwest::Client) -> Result<Vec<SearchRes
             esrb_rating,
             esrb_img,
         };
+        dbg!(&result);
         results.push(result);
     }
     Ok(results)

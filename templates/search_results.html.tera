@@ -1,17 +1,41 @@
 {% for game in results %}
 
-<div>
-  <span>{{ game.game_title }}</span>
-  <div id="stats">
-    <label for="igdb_rating">IGDB Rating</label>
-    <span id="igdb_rating">{{ game.igdb_rating }}</span>
-    <label for="publisher">Publisher</label>
-    <span id="publisher">{{ game.publisher }}</span>
-    <label for="aggregate_rating">Aggregate Rating</label>
-    <span id="aggregate_rating">{{ game.aggregate_rating }}</span>
-    <label for="release_year">Release Year</label>
-    <span id="release_year">{{ game.release_year }}</span>
-    <img src="{{ game.esrb_img }}" alt="{{ game.esrb_rating }}" />
+<div class="bg-stone-200 rounded-lg my-3 px-2 py-2 flex">
+  <div class="inline-block grow">
+    <a
+      href="/game/{{ game.id }}"
+      class="font-bold text-xl text-emerald-800 hover:underline"
+      >{{ game.game_title }}</a
+    >
+    <div id="stats" class="grid grid-cols-4">
+      <div>
+        <p>
+          IGDB Rating
+          <span class="font-bold block">{{ game.igdb_rating }}</span>
+        </p>
+      </div>
+      <div>
+        <p>
+          Publisher
+          <span class="font-bold block">{{ game.publisher }}</span>
+        </p>
+      </div>
+      <div>
+        <p>
+          Aggregate Rating
+          <span class="font-bold block">{{ game.aggregate_rating }}</span>
+        </p>
+      </div>
+      <div>
+        <p>
+          Release Year
+          <span class="font-bold block">{{ game.release_year }}</span>
+        </p>
+      </div>
+    </div>
   </div>
+  {% if game.esrb_img %}
+  <img class="inline" src="{{ game.esrb_img }}" alt="{{ game.esrb_rating }}" />
+  {% endif %}
 </div>
 {% endfor %}

@@ -29,7 +29,7 @@ pub fn _auth_routes() -> Vec<Route> {
     ]
 }
 pub struct User {
-    user_id: String,
+    pub user_id: String,
 }
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for User {

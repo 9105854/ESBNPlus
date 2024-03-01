@@ -1,47 +1,116 @@
-{% extends "base" %} {% block title %}{{ title }}{% endblock title %}
-
-<img src="{{ cover_img_url }}" alt="{{ cover_img_alt }}" />
-<h1>{{ title }}</h1>
-<div id="stats">
-  <img src="{{ esrb_img_url }}" alt="{{ esrb_img_alt }}" />
-  <label for="igdb_rating">IGDB Rating</label>
-  <span id="igdb_rating">{{ igdb_rating }}</span>
-  <label for="publisher">Publisher</label>
-  <span id="publisher">{{ publisher }}</span>
-  <label for="aggregate_rating">Aggregate Rating</label>
-  <span id="aggregate_rating">{{ aggregate_rating }}</span>
-  <label for="release_year">Release Year</label>
-  <span id="release_year">{{ release_year }}</span>
+{% extends "base" %} {% block title %}{{ title }}{% endblock title %} {% block
+content %}
+<div class="w-11/12 mx-auto mt-4">
+  <div class="flex">
+    <img
+      src="{{ cover_img_url }}"
+      alt="{{ cover_img_alt }}"
+      class="self-center rounded-md"
+    />
+    <div class="grid grid-rows-3">
+      <h1 class="block text-5xl font-extrabold text-center w-5/6 mx-auto">
+        {{ title }}
+      </h1>
+      <div id="stats" class="grid grid-cols-3 w-5/6 mx-auto py-2">
+        {% if esrb_img_url %}
+        <img class="h-full" src="{{ esrb_img_url }}" alt="{{ esrb_img_alt }}" />
+        {% endif %}
+        <div class="flex flex-col justify-between">
+          <div>
+            <p>
+              IGDB Rating <span class="block font-bold">{{ igdb_rating }}</span>
+            </p>
+          </div>
+          <div>
+            <p>
+              Publisher <span class="block font-bold">{{ publisher }}</span>
+            </p>
+          </div>
+        </div>
+        <div class="flex flex-col justify-between">
+          <div>
+            <p>
+              Aggregate Rating
+              <span class="block font-bold">{{ aggregate_rating }}</span>
+            </p>
+          </div>
+          <div>
+            <p>
+              Release Year
+              <span class="block font-bold">{{ release_year }}</span>
+            </p>
+          </div>
+        </div>
+      </div>
+      {% if summary %}
+      <p id="summary" class="w-5/6 mx-auto">{{ summary }}</p>
+      {% endif %}
+    </div>
+  </div>
+  {% if content_descriptors.violence %}
+  <h2>ESRB Content Ratings</h2>
+  <div id="esrb_content_ratings">
+    <div>
+      <p>Violence <span>{{ content_descriptors.violence }}</span></p>
+    </div>
+    <div>
+      <p>Language <span>{{ content_descriptors.language }}</span></p>
+    </div>
+    <div>
+      <p>
+        Sexual Content
+        <span>{{ content_descriptors.sexual_content }}</span>
+      </p>
+    </div>
+    <div>
+      <p>
+        Substances
+        <span>{{ content_descriptors.substances }}</span>
+      </p>
+    </div>
+    <div>
+      <p>
+        Gambling
+        <span>{{ content_descriptors.gambling }}</span>
+      </p>
+    </div>
+  </div>
+  {% endif %} {% if user_metrics %}
+  <h2>User Ratings</h2>
+  <div id="user-ratings">
+    <div>
+      <p>Enjoyability <span>{{ user_metrics.enjoyability }}</span></p>
+    </div>
+    <div>
+      <p>Educational Value <span>{{ user_metrics.educational_value }}</span></p>
+    </div>
+    <div>
+      <p>
+        Replayability
+        <span>{{ user_metrics.replayability }}</span>
+      </p>
+    </div>
+    <div>
+      <p>
+        Usability
+        <span>{{ user_metrics.usability }}</span>
+      </p>
+    </div>
+  </div>
+  {% endif %}
+  <form hx-get="/review" hx-target="this" hx-swap="outerHtml">
+    <input type="number" hidden value="{{ game_id }}" name="game_id" />
+    <button>Write Review</button>
+  </form>
+  {% if written_reviews | length > 0 %}
+  <h2>Reviews</h2>
+  {% for review in written_reviews %} {% if review.content | length > 0 %}
+  <div id="review">
+    <h3>{{ review.title }}</h3>
+    <span>{{ review.rating }}</span>
+    <p>{{ review.content }}</p>
+    <span>{{ review.username }}</span>
+  </div>
+  {% endif %} {% endfor %} {% endif %}
 </div>
-<h2>ESRB Content Ratings</h2>
-<table>
-  <tr>
-    <th>Violence</th>
-    <th>Language</th>
-    <th>Sexual Content</th>
-    <th>Substances</th>
-    <th>Gambling</th>
-  </tr>
-  <tr>
-    <td>{{ violence }}</td>
-    <td>{{ language }}</td>
-    <td>{{ sexual_content }}</td>
-    <td>{{ substances }}</td>
-    <td>{{ gambling }}</td>
-  </tr>
-</table>
-<h2>User Ratings</h2>
-<table>
-  <tr>
-    <th>Enjoyability</th>
-    <th>Educational Value</th>
-    <th>Replayability</th>
-    <th>Usability</th>
-  </tr>
-  <tr>
-    <td>{{ enjoyability }}</td>
-    <td>{{ educational_value }}</td>
-    <td>{{ replayability }}</td>
-    <td>{{ usability }}</td>
-  </tr>
-</table>
+{% endblock content %}

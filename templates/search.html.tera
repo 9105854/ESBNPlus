@@ -1,17 +1,21 @@
 {% extends "base" %} {% block title %}Search - {% endblock title %} {% block
 content %}
-<h1>Search</h1>
-<input
+<div class="mx-auto w-1/2 mt-8">
+
+  <h1 class="font-bold text-3xl" class="" class="" class="" class="" class="" class="" class="">Search</h1>
+  <input
   hx-get="/search"
   hx-target="#results"
   hx-push-url="true"
   hx-trigger="input changed delay:500ms, search, q"
-  type="text" name="q" value="" />
+  type="text" name="q" value=""
+  class="border-2 rounded-lg border-stone-800 w-full pl-2" />
 </form>
-<h2>Results</h2>
+<h2 class="font-bold mt-4 text-xl">Results</h2>
 <section id="results">
   {% include "search_results" %}
   <section></section>
 </section>
+</div>
 
 {% endblock content %}

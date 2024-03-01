@@ -1,0 +1,46 @@
+<h2>Post Review</h2>
+<form hx-swap="outerHtml" hx-post="/review">
+  <input type="number" hidden value="{{ game_id }}" name="game_id" />
+
+  <label for="enjoyability">Enjoyability</label>
+  <input
+    type="range"
+    min="0"
+    max="5"
+    id="enjoyability"
+    required
+    name="enjoyability"
+  />
+  <label for="educational_value">Educational Value</label>
+  <input
+    type="range"
+    min="0"
+    max="5"
+    id="educational_value"
+    name="educational_value"
+    required
+  />
+  <label for="replayability">Replayability</label>
+  <input
+    type="range"
+    min="0"
+    max="5"
+    id="replayability"
+    name="replayability"
+    required
+  />
+  <label for="usability">Usability</label>
+  <input
+    type="range"
+    min="0"
+    max="5"
+    id="usability"
+    name="usability"
+    required
+  />
+  <label for="title">Title (Optional)</label>
+  <input type="text" id="title" name="title" />
+  <label for="content">Content (Optional)</label>
+  <input type="text" id="content" name="content" />
+  <button type="submit">Post</button>
+</form>

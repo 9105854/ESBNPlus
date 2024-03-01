@@ -1,6 +1,7 @@
 mod api_helpers;
 mod auth;
 mod game;
+mod review;
 mod search;
 mod utils;
 
@@ -12,8 +13,10 @@ use auth::{
     already_auth_login, already_auth_signup, login, login_ui, logout, logout_ui, logout_ui_no_auth,
     signup, signup_ui,
 };
+use env_logger::Env;
 use game::game_ui;
 use reqwest::header;
+use review::{review_auth_response, review_ui, save_review};
 use rocket::fs::FileServer;
 use rocket::http::CookieJar;
 use rocket_dyn_templates::{context, Template};
@@ -42,7 +45,7 @@ struct IGDBAuth {
 }
 #[launch]
 async fn rocket() -> _ {
-    env_logger::init();
+    env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     log::info!("Starting");
     let pool = SqlitePoolOptions::new()
         .max_connections(5)
@@ -101,7 +104,10 @@ async fn rocket() -> _ {
         simple_search,
         base_search_ui,
         hx_search,
-        game_ui
+        game_ui,
+        review_ui,
+        save_review,
+        review_auth_response,
     ];
     rocket::build()
         .mount("/", routes)

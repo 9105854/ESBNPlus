@@ -3,37 +3,49 @@
 | ESRB_cartoon_violence               | 5  |
 | ESRB_animated_blood                 | 2  |
 | ESRB_violent_references             | 30 |
+===
 | ESRB_mild_animated violence         | 43 |
 | ESRB_mild_fantasy violence          | 47 |
 | ESRB_mild_blood                     | 38 |
 | ESRB_mild_violence                  | 33 |
+===
 | ESRB_animated_violence              | 31 |
 | ESRB_fantasy_violence               | 9  |
 | ESRB_blood                          | 3  |
 | ESRB_violence                       | 29 |
 | ESRB_animated_blood and gore        | 46 |
+===
 | ESRB_blood_and gore                 | 4  |
 | ESRB_intense_violence               | 10 |
+===
 | ESRB_realistic_violence             | 40 |
 | ESRB_realistic_blood                | 49 |
 | ESRB_realistic_blood and gore       | 39 |
 --- Language
 | ESRB_mild_language                  | 32 |
+===
 | ESRB_language                       | 11 |
-| ESRB_strong_language                | 21 |
-| ESRB_mild_lyrics                    | 48 |
+===
 | ESRB_lyrics                         | 12 |
+===
+| ESRB_mild_lyrics                    | 48 |
+===
+| ESRB_strong_language                | 21 |
 | ESRB_strong_lyrics                  | 22 |
 --- Sexual Content
 | ESRB_mild_suggestive themes         | 36 |
 | ESRB_suggestive_themes              | 24 |
+===
 | ESRB_mild_sexual themes             | 44 |
 | ESRB_sexual_themes                  | 18 |
+===
 | ESRB_mature_sexual themes           | 42 |
 | ESRB_partial_nudity                 | 15 |
 | ESRB_nudity                         | 14 |
+===
 | ESRB_sexual_content                 | 17 |
 | ESRB_strong_sexual content          | 23 |
+===
 | ESRB_sexual_violence                | 19 |
 --- Gambling
 | ESRB_simulated_gambling             | 20 |
@@ -41,11 +53,15 @@
 --- Substances
 | ESRB_tobacco_reference              | 25 |
 | ESRB_alcohol_reference              | 1  | 
+===
 | ESRB_drug_reference                 | 8  |
 | ESRB_alcohol_and tobacco reference  | 41 |
+===
 | ESRB_drug_and alcohol reference     | 35 |
 | ESRB_use_of tobacco                 | 28 |
+===
 | ESRB_use_of alcohol                 | 26 |
 | ESRB_use_of drugs                   | 27 |
+===
 | ESRB_use_of alcohol and tobacco     | 45 |
 | ESRB_use_of drugs and alcohol       | 34 |
