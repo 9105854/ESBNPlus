@@ -1,6 +1,8 @@
-{% for game in results %}
+{% if results | length > 0 %} {% for game in results %}
 
-<div class="bg-stone-200 rounded-lg my-3 px-2 py-2 flex">
+<div
+  class="bg-stone-200 rounded-lg my-3 px-2 py-2 flex htmx-added:opacity-0 opacity-100 transition-opacity duration-1000"
+>
   <div class="inline-block grow">
     <a
       href="/game/{{ game.id }}"
@@ -36,6 +38,27 @@
   </div>
   {% if game.esrb_img %}
   <img class="inline" src="{{ game.esrb_img }}" alt="{{ game.esrb_rating }}" />
+  {% else %}
+  <img
+    class="inline w-[60px] h-[91px]"
+    src="https://www.esrb.org/wp-content/uploads/2019/05/RP.svg"
+    alt="Rating
+  Pending"
+  />
   {% endif %}
 </div>
 {% endfor %}
+<!-- <div
+  hx-get="/search"
+  hx-trigger="revealed"
+  hx-target="this"
+  hx-swap="outerHTML"
+  hidden
+>
+  <input type="text" name="q" value="{# query #}" />
+  <input type="number" name="page" value="{# page #}" />
+</div> -->
+
+{% else %}
+<p>No Results!</p>
+{% endif %}

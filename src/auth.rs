@@ -28,6 +28,7 @@ pub fn _auth_routes() -> Vec<Route> {
         logout
     ]
 }
+#[derive(Clone)]
 pub struct User {
     pub user_id: String,
 }

@@ -1,5 +1,16 @@
 {% extends "base" %} {% block title %}Log Out - {% endblock title %} {% block
 content %}
-<h1>Log Out</h1>
-<button type="button" hx-delete="/auth/logout" hx-target="body">Log Out</button>
+<div class="w-1/3 mx-auto">
+  <h1 class="font-bold text-4xl mb-4 mt-10">Log Out</h1>
+  <button
+    class="w-full mt-2 border-2 rounded-lg border-red-800 bg-red-400 hover:bg-red-700 py-2 font-bold"
+    type="button"
+    hx-push-url="true"
+    hx-delete="/auth/logout"
+    hx-target="body"
+    hx-confirm="Are you sure you want to log out?"
+  >
+    Log Out
+  </button>
+</div>
 {% endblock content %}

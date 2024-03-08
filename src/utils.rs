@@ -76,6 +76,12 @@ impl Display for ESRBRating {
         std::fmt::Result::Ok(())
     }
 }
+pub fn round_2(num: f64) -> f64 {
+    (num * 100.0).round() / 100.0
+}
+pub fn round_1(num: f32) -> f32 {
+    (num * 10.0).round() / 10.0
+}
 pub struct HXRequest;
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for HXRequest {
@@ -86,6 +92,25 @@ impl<'r> FromRequest<'r> for HXRequest {
             return Outcome::Success(HXRequest);
         } else {
             return Outcome::Forward(Status::Continue);
+        }
+    }
+}
+
+use chrono::NaiveDate;
+use chrono::ParseError;
+
+use rocket::form::{self, DataField, FromFormField, ValueField};
+
+pub struct NaiveDateForm(pub NaiveDate);
+#[rocket::async_trait]
+impl<'r> FromFormField<'r> for NaiveDateForm {
+    fn from_value(field: ValueField<'r>) -> form::Result<'r, Self> {
+        match NaiveDate::parse_from_str(field.value, "%Y-%m-%d") {
+            Ok(date) => Ok(NaiveDateForm(date)),
+            Err(e) => Err(form::Error::validation(format!(
+                "Couldn't parse time: {}",
+                e
+            )))?,
         }
     }
 }

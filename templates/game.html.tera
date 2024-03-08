@@ -1,19 +1,23 @@
 {% extends "base" %} {% block title %}{{ title }}{% endblock title %} {% block
 content %}
 <div class="w-11/12 mx-auto mt-4">
-  <div class="flex">
+  <div class="flex w-11/12 gap-20 justify-around">
     <img
       src="{{ cover_img_url }}"
       alt="{{ cover_img_alt }}"
       class="self-center rounded-md"
     />
-    <div class="grid grid-rows-3">
-      <h1 class="block text-5xl font-extrabold text-center w-5/6 mx-auto">
-        {{ title }}
-      </h1>
-      <div id="stats" class="grid grid-cols-3 w-5/6 mx-auto py-2">
+    <div class="grid grid-rows-3 w-full">
+      <h1 class="block text-5xl font-extrabold text-center">{{ title }}</h1>
+      <div id="stats" class="grid grid-cols-3 w-full mx-auto py-2">
         {% if esrb_img_url %}
         <img class="h-full" src="{{ esrb_img_url }}" alt="{{ esrb_img_alt }}" />
+        {% else %}
+        <img
+          class="w-[72px] h-[109px]"
+          src="https://www.esrb.org/wp-content/uploads/2019/05/RP.svg"
+          alt="Rating Pending"
+        />
         {% endif %}
         <div class="flex flex-col justify-between">
           <div>
@@ -43,73 +47,122 @@ content %}
         </div>
       </div>
       {% if summary %}
-      <p id="summary" class="w-5/6 mx-auto">{{ summary }}</p>
+      <p id="summary">{{ summary }}</p>
       {% endif %}
     </div>
   </div>
   {% if content_descriptors.violence %}
-  <h2>ESRB Content Ratings</h2>
-  <div id="esrb_content_ratings">
-    <div>
-      <p>Violence <span>{{ content_descriptors.violence }}</span></p>
+  <h2 class="font-bold text-3xl py-2">ESRB Content Ratings</h2>
+  <div id="esrb_content_ratings" class="flex gap-4 w-11/12 flex-wrap">
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
+        Violence
+        <span class="font-bold text-xl block"
+          >{{ content_descriptors.violence }}</span
+        >
+      </p>
     </div>
-    <div>
-      <p>Language <span>{{ content_descriptors.language }}</span></p>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
+        Language
+        <span class="font-bold text-xl block"
+          >{{ content_descriptors.language }}</span
+        >
+      </p>
     </div>
-    <div>
-      <p>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
         Sexual Content
-        <span>{{ content_descriptors.sexual_content }}</span>
+        <span class="font-bold text-xl block"
+          >{{ content_descriptors.sexual_content }}</span
+        >
       </p>
     </div>
-    <div>
-      <p>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
         Substances
-        <span>{{ content_descriptors.substances }}</span>
+        <span class="font-bold text-xl block"
+          >{{ content_descriptors.substances }}</span
+        >
       </p>
     </div>
-    <div>
-      <p>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
         Gambling
-        <span>{{ content_descriptors.gambling }}</span>
+        <span class="font-bold text-xl block"
+          >{{ content_descriptors.gambling }}</span
+        >
       </p>
     </div>
   </div>
   {% endif %} {% if user_metrics %}
-  <h2>User Ratings</h2>
-  <div id="user-ratings">
-    <div>
-      <p>Enjoyability <span>{{ user_metrics.enjoyability }}</span></p>
-    </div>
-    <div>
-      <p>Educational Value <span>{{ user_metrics.educational_value }}</span></p>
-    </div>
-    <div>
-      <p>
-        Replayability
-        <span>{{ user_metrics.replayability }}</span>
+  <h2 class="font-bold text-3xl py-2">User Ratings</h2>
+  <div id="user-ratings" class="flex gap-4 w-11/12 flex-wrap">
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
+        Enjoyability
+        <span class="font-bold text-xl block"
+          >{{ user_metrics.enjoyability }}/5</span
+        >
       </p>
     </div>
-    <div>
-      <p>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
+        Educational Value
+        <span class="font-bold text-xl block"
+          >{{ user_metrics.educational_value }}/5</span
+        >
+      </p>
+    </div>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
+        Replayability
+        <span class="font-bold text-xl block"
+          >{{ user_metrics.replayability }}/5</span
+        >
+      </p>
+    </div>
+    <div class="bg-stone-200 rounded-lg flex-1 pt-1 pb-2">
+      <p class="text-center">
         Usability
-        <span>{{ user_metrics.usability }}</span>
+        <span class="font-bold text-xl block"
+          >{{ user_metrics.usability }}/5</span
+        >
       </p>
     </div>
   </div>
-  {% endif %}
+  {% endif %} {% if written_reviews | length == 0 %}
   <form hx-get="/review" hx-target="this" hx-swap="outerHtml">
     <input type="number" hidden value="{{ game_id }}" name="game_id" />
-    <button>Write Review</button>
+    <button
+      class="border-2 border-emerald-800 rounded-lg bg-emerald-200 hover:bg-emerald-300 mt-3 p-2"
+    >
+      Write Review
+    </button>
   </form>
-  {% if written_reviews | length > 0 %}
-  <h2>Reviews</h2>
+  {% else %}
+  <h2 class="font-bold text-3xl py-2">Reviews</h2>
+  <form hx-get="/review" hx-target="this" hx-swap="outerHtml">
+    <input type="number" hidden value="{{ game_id }}" name="game_id" />
+    <button
+      class="border-2 border-emerald-800 rounded-lg bg-emerald-200 hover:bg-emerald-300 mb-2 p-2"
+    >
+      Write Review
+    </button>
+  </form>
   {% for review in written_reviews %} {% if review.content | length > 0 %}
-  <div id="review">
-    <h3>{{ review.title }}</h3>
-    <span>{{ review.rating }}</span>
-    <p>{{ review.content }}</p>
-    <span>{{ review.username }}</span>
+  <div id="review" class="bg-stone-200 px-4 py-2 rounded-lg my-2 w-11/12">
+    <div class="flex justify-between border-b-2 border-emerald-500 mb-1">
+      <h3 class="font-bold text-xl">{{ review.title }}</h3>
+      <span>Enjoyability: {{ review.rating }}/5</span>
+    </div>
+    <p class="inline break-words">{{ review.content }}</p>
+    <span class="float-right font-light"
+      >Written by
+      <span class="text-emerald-600 font-normal"
+        >@{{ review.username }}</span
+      ></span
+    >
   </div>
   {% endif %} {% endfor %} {% endif %}
 </div>

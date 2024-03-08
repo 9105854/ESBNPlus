@@ -20,7 +20,7 @@ use review::{review_auth_response, review_ui, save_review};
 use rocket::fs::FileServer;
 use rocket::http::CookieJar;
 use rocket_dyn_templates::{context, Template};
-use search::{base_search_ui, hx_search, simple_search};
+use search::{advanced_search, base_search_ui, hx_search, simple_search};
 use serde::Deserialize;
 use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
 use utils::AppError;
@@ -108,6 +108,7 @@ async fn rocket() -> _ {
         review_ui,
         save_review,
         review_auth_response,
+        advanced_search
     ];
     rocket::build()
         .mount("/", routes)

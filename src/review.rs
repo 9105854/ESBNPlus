@@ -13,7 +13,7 @@ pub async fn review_ui(game_id: u64, _user: User) -> Template {
 #[get("/review?<game_id>", rank = 2)]
 pub async fn review_auth_response(game_id: u64) -> RawHtml<String> {
     RawHtml(
-        r#"Must be logged in to review! Log in <a href="/auth/login" hx-boost="false">here.</a>"#
+        r#"Must be logged in to review! Log in <a class="hover:underline text-emerald-700" href="/auth/login" hx-boost="false">here.</a>"#
             .to_string(),
     )
 }

@@ -1,21 +1,232 @@
 {% extends "base" %} {% block title %}Search - {% endblock title %} {% block
 content %}
+<script>
+  function updateAdvanced(value) {
+    var advanced_query = document.getElementById("advancedQuery");
+    advanced_query.value = value;
+  }
+  htmx.onLoad(function (content) {
+    let datePicker = document.getElementById("datePicker");
+    if (datePicker !== null) {
+      datePicker.valueAsDate = new Date();
+    }
+  });
+  document.getElementById("dateTo").valueAsDate = new Date();
+</script>
 <div class="mx-auto w-1/2 mt-8">
-
-  <h1 class="font-bold text-3xl" class="" class="" class="" class="" class="" class="" class="">Search</h1>
+  <label for="simpleSearch"><h1 class="font-bold text-3xl">Search</h1></label>
   <input
-  hx-get="/search"
-  hx-target="#results"
-  hx-push-url="true"
-  hx-trigger="input changed delay:500ms, search, q"
-  type="text" name="q" value=""
-  class="border-2 rounded-lg border-stone-800 w-full pl-2" />
-</form>
-<h2 class="font-bold mt-4 text-xl">Results</h2>
-<section id="results">
-  {% include "search_results" %}
-  <section></section>
-</section>
+    hx-get="/search"
+    hx-target="#results"
+    hx-push-url="true"
+    hx-trigger="input changed delay:500ms, search, q"
+    type="text"
+    name="q"
+    value="{{ query }}"
+    id="simpleQuery"
+    oninput="updateAdvanced(this.value)"
+    class="border-2 rounded-lg border-stone-800 w-full pl-2 py-1 text-xl mt-3"
+  />
+  <img
+    class="hidden htmx-request:visible"
+    src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg"
+    alt="Loading icon"
+  />
+  <details>
+    <summary>Advanced Search</summary>
+    <div>
+      <form hx-post="/search/advanced" hx-target="#results" hx-push-url="true">
+        <input
+          hidden
+          type="text"
+          name="query"
+          value="{{ query }}"
+          id="advancedQuery"
+        />
+        <fieldset>
+          <legend class="font-bold text-lg">ESRB Age Ratings</legend>
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="everyone"
+              checked
+              value="Everyone"
+            />
+            <label for="everyone">Everyone</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="everyone10"
+              checked
+              value="Everyone 10+"
+            />
+            <label for="everyone10">Everyone 10+</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="teen"
+              checked
+              value="Teen"
+            />
+            <label for="teen">Teen</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="mature17"
+              checked
+              value="Mature 17+"
+            />
+            <label for="mature17">Mature 17+</label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="adults18"
+              checked
+              value="Adults Only 18+"
+            />
+            <label for="adults18">Adults Only 18+</label>
+          </div>
+          
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="ratingPending"
+              checked
+              value="Rating Pending"
+            />
+            <label for="ratingPending">Rating Pending</label>
+          </div>
+          
+          <div>
+            <input
+              type="checkbox"
+              name="esrbAgeRatings"
+              id="ratingPendingLikelyMature"
+              checked
+              value="Rating Pending - Likely Mature"
+            />
+            <label for="ratingPendingLikelyMature">Rating Pending - Likely Mature</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>EsrbContentRatings</legend>
+          <label for="violence">Violence</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="violence"
+            name="violence"
+            value="5"
+          />
+          <br />
+          <label for="language">Language</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="language"
+            name="language"
+            value="5"
+          />
+          <br />
+          <label for="sexualContent">Sexual Content</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="sexualContent"
+            name="sexualContent"
+            value="5"
+          />
+          <br />
+          <label for="substances">Substances</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="substances"
+            name="substances"
+            value="5"
+          />
+          <br />
+          <label for="gambling">Gambling</label>
+          <input
+            type="checkbox"
+            id="gambling"
+            name="gambling"
+            checked
+          />
+        </fieldset>
+
+        <fieldset>
+          <legend>UserRatings</legend>
+          <label for="enjoyability">Enjoyability</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="enjoyability"
+            name="enjoyability"
+            value="0"
+          />
+          <br />
+          <label for="educationalValue">Educational Value</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="educationalValue"
+            name="educationalValue"
+            value="0"
+          />
+          <br />
+          <label for="replayability">Replayability</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="replayability"
+            name="replayability"
+            value="0"
+          />
+          <br />
+          <label for="usability">Usability</label>
+          <input
+            type="range"
+            min="0"
+            max="5"
+            id="usability"
+            name="usability"
+            value="0"
+          />
+        </fieldset>
+
+        <fieldset>
+          <legend>DateRange</legend>
+          <label for="dateFrom">From</label>
+          <input type="date" id="dateFrom" name="dateFrom" value="1800-01-01" />
+          <br />
+          <label for="dateTo">To</label>
+          <input type="date" id="dateTo" name="dateTo" />
+        </fieldset>
+        <button type="submit" class="border">Search</button>
+      </form>
+    </div>
+  </details>
+  <h2 class="font-bold mt-4 text-xl">Results</h2>
+  <section id="results">{% include "search_results" %}</section>
 </div>
 
 {% endblock content %}

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <title>{% block title %}{% endblock title %}ESRB Plus</title>
@@ -22,20 +22,23 @@
             <input
               type="text"
               name="q"
-              class="w-full border-stone-900 border-2 rounded-lg"
+              class="w-full pl-2 border-stone-900 border-2 rounded-lg"
             />
           </form>
         </ul>
         <div>
-          {% if user_id is undefined%}
+          {% if user_id %}
+          <a
+            class="text-emerald-800 text-xl hover:underline absolute bottom-5"
+            href="/auth/logout"
+            >Log Out</a
+          >
+          {% else %}
           <a
             href="/auth/login"
             class="text-emerald-800 text-xl hover:underline absolute bottom-5"
             >Log In</a
           >
-          {% else %}
-
-          <a href="/auth/logout">Log Out</a>
           {% endif %}
         </div>
       </div>
