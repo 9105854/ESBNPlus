@@ -21,8 +21,8 @@ struct Category {
     category: u16,
 }
 #[derive(Deserialize, Debug)]
-struct GameResponse {
-    id: Option<u64>,
+pub struct GameResponse {
+    pub id: u64,
     name: Option<String>,
     aggregated_rating: Option<f32>,
     rating: Option<f32>,
@@ -47,7 +47,7 @@ pub struct GameListing {
     pub igdb_rating: String,
     pub publisher: String,
     pub aggregate_rating: String,
-    pub release_year: String,
+    pub release_year: Option<i32>,
     pub content_descriptors: Option<ContentDescriptorCategories>,
     pub game_id: u64,
     pub user_metrics: Option<UserMetrics>,
@@ -70,27 +70,10 @@ pub struct WrittenReview {
     username: String,
 }
 pub async fn game_logic(
-    client: &reqwest::Client,
+    response: &GameResponse,
     sqlite_pool: &SqlitePool,
     user: Option<User>,
-    id: u64,
 ) -> Result<GameListing, AppError> {
-    let api_string = format!(
-        r#"fields name, aggregated_rating, rating, summary, first_release_date, involved_companies.company.name, age_ratings.*, age_ratings.content_descriptions.category, cover.image_id; where id = {};"#,
-        id
-    );
-    let response: Vec<GameResponse> = client
-        .post("https://api.igdb.com/v4/games")
-        .body(api_string)
-        .send()
-        .await?
-        .json()
-        .await?;
-    if response.is_empty() || response[0].id.is_none() {
-        dbg!(response);
-        return Err(anyhow::anyhow!("Couldn't find game").into());
-    }
-    let response = &response[0];
     dbg!(&response);
     let title = response.name.clone().unwrap().to_string();
     let cover_img_url = if let Some(cover) = &response.cover {
@@ -189,7 +172,7 @@ pub async fn game_logic(
     });
     let (esrb_img_alt, esrb_img_url) = process_esrb(simplified_esrb);
     // TODO: Round the fields, check for no reviews as well
-    let user_metrics_from_db : Vec<UserMetrics> = sqlx::query_as("SELECT AVG(enjoyability) as enjoyability, AVG(educationalValue) as educationalValue, AVG(replayability) as replayability, AVG(usability) as usability, COUNT(*) as count FROM reviews WHERE gameId = ? HAVING count > 0").bind(id as i64).fetch_all(sqlite_pool).await?;
+    let user_metrics_from_db : Vec<UserMetrics> = sqlx::query_as("SELECT AVG(enjoyability) as enjoyability, AVG(educationalValue) as educationalValue, AVG(replayability) as replayability, AVG(usability) as usability, COUNT(*) as count FROM reviews WHERE gameId = ? HAVING count > 0").bind(response.id as i64).fetch_all(sqlite_pool).await?;
     let user_metrics = if user_metrics_from_db.is_empty() {
         None
     } else {
@@ -198,7 +181,7 @@ pub async fn game_logic(
     let written_reviews: Vec<WrittenReview> = sqlx::query_as(
         "SELECT reviews.content, reviews.title, users.username, reviews.enjoyability as rating FROM reviews, users WHERE reviews.gameId = ? AND reviews.content IS NOT NULL AND users.userId = reviews.userId ",
     )
-    .bind(id as i64)
+    .bind(response.id as i64)
     .fetch_all(sqlite_pool)
     .await?;
     let summary = if let Some(mut summary) = response.summary.clone() {
@@ -226,7 +209,7 @@ pub async fn game_logic(
         aggregate_rating,
         release_year,
         content_descriptors,
-        game_id: id,
+        game_id: response.id,
         written_reviews,
         user_metrics,
         user_id,
@@ -239,7 +222,23 @@ pub async fn game_ui(
     sqlite_state: &State<SqliteState>,
     user: Option<User>,
 ) -> Result<Template, AppError> {
-    let game_listing = game_logic(client, &sqlite_state.pool, user.clone(), id).await?;
+    let api_string = format!(
+        r#"fields name, aggregated_rating, rating, summary, first_release_date, involved_companies.company.name, age_ratings.*, age_ratings.content_descriptions.category, cover.image_id; where id = {};"#,
+        id
+    );
+    let response: Vec<GameResponse> = client
+        .post("https://api.igdb.com/v4/games")
+        .body(api_string)
+        .send()
+        .await?
+        .json()
+        .await?;
+    if response.is_empty() {
+        dbg!(response);
+        return Err(anyhow::anyhow!("Couldn't find game").into());
+    }
+    let response = &response[0];
+    let game_listing = game_logic(response, &sqlite_state.pool, user.clone()).await?;
     Ok(Template::render("game", game_listing))
 }
 

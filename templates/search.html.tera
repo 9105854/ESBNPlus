@@ -5,13 +5,9 @@ content %}
     var advanced_query = document.getElementById("advancedQuery");
     advanced_query.value = value;
   }
-  htmx.onLoad(function (content) {
-    let datePicker = document.getElementById("datePicker");
-    if (datePicker !== null) {
-      datePicker.valueAsDate = new Date();
-    }
+  window.addEventListener("load", (event) => {
+    document.getElementById("dateTo").valueAsDate = new Date();
   });
-  document.getElementById("dateTo").valueAsDate = new Date();
 </script>
 <div class="mx-auto w-1/2 mt-8">
   <label for="simpleSearch"><h1 class="font-bold text-3xl">Search</h1></label>
@@ -25,7 +21,7 @@ content %}
     value="{{ query }}"
     id="simpleQuery"
     oninput="updateAdvanced(this.value)"
-    class="border-2 rounded-lg border-stone-800 w-full pl-2 py-1 text-xl mt-3"
+    class="border-2 rounded-lg border-emerald-700 w-full pl-2 py-1 text-xl mt-3"
   />
   <img
     class="hidden htmx-request:visible"
@@ -33,9 +29,9 @@ content %}
     alt="Loading icon"
   />
   <details>
-    <summary>Advanced Search</summary>
+    <summary class="text-lg">Advanced Search</summary>
     <div>
-      <form hx-post="/search/advanced" hx-target="#results" hx-push-url="true">
+      <form hx-post="/search/advanced" hx-target="#results">
         <input
           hidden
           type="text"
@@ -45,179 +41,203 @@ content %}
         />
         <fieldset>
           <legend class="font-bold text-lg">ESRB Age Ratings</legend>
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="everyone"
-              checked
-              value="Everyone"
-            />
-            <label for="everyone">Everyone</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="everyone10"
-              checked
-              value="Everyone 10+"
-            />
-            <label for="everyone10">Everyone 10+</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="teen"
-              checked
-              value="Teen"
-            />
-            <label for="teen">Teen</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="mature17"
-              checked
-              value="Mature 17+"
-            />
-            <label for="mature17">Mature 17+</label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="adults18"
-              checked
-              value="Adults Only 18+"
-            />
-            <label for="adults18">Adults Only 18+</label>
-          </div>
-          
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="ratingPending"
-              checked
-              value="Rating Pending"
-            />
-            <label for="ratingPending">Rating Pending</label>
-          </div>
-          
-          <div>
-            <input
-              type="checkbox"
-              name="esrbAgeRatings"
-              id="ratingPendingLikelyMature"
-              checked
-              value="Rating Pending - Likely Mature"
-            />
-            <label for="ratingPendingLikelyMature">Rating Pending - Likely Mature</label>
+          <div class="grid grid-cols-3">
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="everyone"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Everyone"
+              />
+              <label for="everyone">Everyone</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="everyone10"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Everyone 10+"
+              />
+              <label for="everyone10">Everyone 10+</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="teen"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Teen"
+              />
+              <label for="teen">Teen</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="mature17"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Mature 17+"
+              />
+              <label for="mature17">Mature 17+</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="adults18"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Adults Only 18+"
+              />
+              <label for="adults18">Adults Only 18+</label>
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="ratingPending"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Rating Pending"
+              />
+              <label for="ratingPending">Rating Pending</label>
+            </div>
+
+            <div>
+              <input
+                type="checkbox"
+                name="esrbAgeRatings"
+                id="ratingPendingLikelyMature"
+                checked
+                class="mr-2 accent-emerald-500"
+                value="Rating Pending - Likely Mature"
+              />
+              <label for="ratingPendingLikelyMature"
+                >Rating Pending - Likely Mature</label
+              >
+            </div>
           </div>
         </fieldset>
 
         <fieldset>
-          <legend>EsrbContentRatings</legend>
-          <label for="violence">Violence</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="violence"
-            name="violence"
-            value="5"
-          />
-          <br />
-          <label for="language">Language</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="language"
-            name="language"
-            value="5"
-          />
-          <br />
-          <label for="sexualContent">Sexual Content</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="sexualContent"
-            name="sexualContent"
-            value="5"
-          />
-          <br />
-          <label for="substances">Substances</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="substances"
-            name="substances"
-            value="5"
-          />
-          <br />
-          <label for="gambling">Gambling</label>
-          <input
-            type="checkbox"
-            id="gambling"
-            name="gambling"
-            checked
-          />
+          <legend class="font-bold text-lg">Maximum ESRB Content Rating</legend>
+          <div class="grid grid-cols-3">
+            <div>
+              <label class="block" for="violence">Violence</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="violence"
+                name="violence"
+                value="5"
+              />
+              <!-- <output id="amount" name="amount" for="violence">0</output> -->
+            </div>
+            <div>
+              <label class="block" for="language">Language</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="language"
+                name="language"
+                value="5"
+              />
+            </div>
+            <div>
+              <label class="block" for="sexualContent">Sexual Content</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="sexualContent"
+                name="sexualContent"
+                value="5"
+              />
+            </div>
+            <div>
+              <label class="block" for="substances">Substances</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="substances"
+                name="substances"
+                value="5"
+              />
+            </div>
+            <div>
+              <label class="block" for="gambling">Gambling</label>
+              <input type="checkbox" id="gambling" name="gambling" checked />
+            </div>
+          </div>
         </fieldset>
 
         <fieldset>
-          <legend>UserRatings</legend>
-          <label for="enjoyability">Enjoyability</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="enjoyability"
-            name="enjoyability"
-            value="0"
-          />
-          <br />
-          <label for="educationalValue">Educational Value</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="educationalValue"
-            name="educationalValue"
-            value="0"
-          />
-          <br />
-          <label for="replayability">Replayability</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="replayability"
-            name="replayability"
-            value="0"
-          />
-          <br />
-          <label for="usability">Usability</label>
-          <input
-            type="range"
-            min="0"
-            max="5"
-            id="usability"
-            name="usability"
-            value="0"
-          />
+          <legend class="font-bold text-lg">Minumum User Ratings</legend>
+          <div class="grid grid-cols-3">
+            <div>
+              <label class="block" for="enjoyability">Enjoyability</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="enjoyability"
+                name="enjoyability"
+                value="0"
+              />
+            </div>
+            <div>
+              <label class="block" for="educationalValue"
+                >Educational Value</label
+              >
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="educationalValue"
+                name="educationalValue"
+                value="0"
+              />
+            </div>
+            <div>
+              <label class="block" for="replayability">Replayability</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="replayability"
+                name="replayability"
+                value="0"
+              />
+            </div>
+            <div>
+              <label class="block" for="usability">Usability</label>
+              <input
+                type="range"
+                min="0"
+                max="5"
+                id="usability"
+                name="usability"
+                value="0"
+              />
+            </div>
+          </div>
         </fieldset>
 
         <fieldset>
-          <legend>DateRange</legend>
+          <legend class="font-bold text-lg">DateRange</legend>
           <label for="dateFrom">From</label>
-          <input type="date" id="dateFrom" name="dateFrom" value="1800-01-01" />
-          <br />
+          <input type="date" id="dateFrom" name="dateFrom" value="1950-01-01" />
+
           <label for="dateTo">To</label>
           <input type="date" id="dateTo" name="dateTo" />
         </fieldset>

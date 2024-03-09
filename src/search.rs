@@ -2,7 +2,7 @@ use crate::api_helpers::{
     process_esrb, process_rating, process_release_year, AgeRating, InvolvedCompany,
 };
 use crate::auth::User;
-use crate::game::game_logic;
+use crate::game::{game_logic, GameResponse};
 use crate::utils::{AppError, HXRequest, NaiveDateForm};
 use crate::SqliteState;
 use chrono::Utc;
@@ -29,7 +29,7 @@ struct SearchResult {
     igdb_rating: String,
     publisher: String,
     aggregate_rating: String,
-    release_year: String,
+    release_year: Option<i32>,
     esrb_rating: String,
     esrb_img: Option<String>,
 }
@@ -172,17 +172,20 @@ pub async fn advanced_search(
 ) -> Result<Template, AppError> {
     let query = &search.query;
 
-    let body = format!(r#"search "{}"; limit 30; where category = (0,8,9);"#, query);
-    let response: Vec<GameIdOnly> = client
+    let api_string = format!(
+        r#"search "{}"; fields name, aggregated_rating, rating, summary, first_release_date, involved_companies.company.name, age_ratings.*, age_ratings.content_descriptions.category, cover.image_id; where category = (0, 8, 9); limit 30;"#,
+        query
+    );
+    let response: Vec<GameResponse> = client
         .post("https://api.igdb.com/v4/games")
-        .body(body)
+        .body(api_string)
         .send()
         .await?
         .json()
         .await?;
     let mut rich_game_results = Vec::new();
     for game in response.iter() {
-        let rich_listing = game_logic(client, &sqlite_state.pool, user.clone(), game.id).await;
+        let rich_listing = game_logic(game, &sqlite_state.pool, user.clone()).await;
         if rich_listing.is_ok() {
             rich_game_results.push(rich_listing.unwrap())
         }
@@ -217,6 +220,15 @@ pub async fn advanced_search(
                     && search.enjoyability == 0.0
             }
         })
+        .filter(|game| {
+            if let Some(release_year) = game.release_year {
+                let release_year = chrono::prelude::NaiveDate::from_ymd_opt(release_year, 1, 1);
+                if let Some(release_year) = release_year {
+                    return release_year > search.date_from.0 && release_year < search.date_to.0;
+                }
+            }
+            false
+        })
         .map(|rich_game| SearchResult {
             id: rich_game.game_id.to_string(),
             game_title: rich_game.title.clone(),
@@ -227,6 +239,8 @@ pub async fn advanced_search(
             esrb_rating: rich_game.esrb_img_alt.clone(),
             esrb_img: rich_game.esrb_img_url.clone(),
         })
+        .take(10)
         .collect();
     Ok(Template::render("search_results", context![results, query]))
+    // TODO: Implement date filtering and speed up search times by getting all video game data in one go then processing it
 }

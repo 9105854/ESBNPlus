@@ -41,7 +41,10 @@ content %}
           <div>
             <p>
               Release Year
-              <span class="block font-bold">{{ release_year }}</span>
+              <span class="block font-bold"
+                >{% if release_year %}{{ release_year }}{% else %}N/A{% endif
+                %}</span
+              >
             </p>
           </div>
         </div>
@@ -58,7 +61,7 @@ content %}
       <p class="text-center">
         Violence
         <span class="font-bold text-xl block"
-          >{{ content_descriptors.violence }}</span
+          >{{ content_descriptors.violence }}/5</span
         >
       </p>
     </div>
@@ -66,7 +69,7 @@ content %}
       <p class="text-center">
         Language
         <span class="font-bold text-xl block"
-          >{{ content_descriptors.language }}</span
+          >{{ content_descriptors.language }}/5</span
         >
       </p>
     </div>
@@ -74,7 +77,7 @@ content %}
       <p class="text-center">
         Sexual Content
         <span class="font-bold text-xl block"
-          >{{ content_descriptors.sexual_content }}</span
+          >{{ content_descriptors.sexual_content }}/5</span
         >
       </p>
     </div>
@@ -82,7 +85,7 @@ content %}
       <p class="text-center">
         Substances
         <span class="font-bold text-xl block"
-          >{{ content_descriptors.substances }}</span
+          >{{ content_descriptors.substances }}/5</span
         >
       </p>
     </div>
@@ -90,8 +93,8 @@ content %}
       <p class="text-center">
         Gambling
         <span class="font-bold text-xl block"
-          >{{ content_descriptors.gambling }}</span
-        >
+          >{% if content_descriptors.gambling %}Yes{% else %}No{% endif %}
+        </span>
       </p>
     </div>
   </div>
