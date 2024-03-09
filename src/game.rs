@@ -33,8 +33,8 @@ pub struct GameResponse {
     summary: Option<String>,
 }
 #[derive(Deserialize, Debug)]
-struct Cover {
-    image_id: String,
+pub struct Cover {
+    pub image_id: String,
 }
 #[derive(Debug, Serialize)]
 pub struct GameListing {
@@ -185,6 +185,7 @@ pub async fn game_logic(
     .fetch_all(sqlite_pool)
     .await?;
     let summary = if let Some(mut summary) = response.summary.clone() {
+        // max characters 400
         summary.truncate(400);
         let position = summary.rfind('.');
         if let Some(position) = position {
@@ -192,7 +193,6 @@ pub async fn game_logic(
         }
         summary.push('.');
         Some(summary)
-        // max characters 400
     } else {
         None
     };

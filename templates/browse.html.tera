@@ -1,0 +1,62 @@
+{% extends "base" %} {% block title %}Browse - {% endblock title %} {% block
+content %}
+<section>
+  <h2 class="mt-4 font-bold text-3xl mb-1">New Games</h2>
+  <div class="overflow-x-auto w-11/12">
+    <div class="w-max pb-5">
+      {% for game in new_games %}
+      <a class="inline-block relative" href="/game/{{ game.id }}">
+        <img
+          loading="lazy"
+          src="{{ game.cover_img_url }}"
+          alt="{{ game.cover_img_alt }}"
+          class="rounded-md inline-block"
+        />
+        {% if game.esrb_img_url %}
+        <img
+          class="inline-block absolute right-1 bottom-1"
+          src="{{ game.esrb_img_url }}"
+          alt="{{ game.esrb_img_alt }}"
+        />
+        {% else %}
+        <img
+          class="inline-block absolute right-1 bottom-1 w-[60px] h-[91px]"
+          src="https://www.esrb.org/wp-content/uploads/2019/05/RP.svg"
+          alt="Rating Pending"
+        />
+        {% endif %} </a
+      >{% endfor %}
+    </div>
+  </div>
+</section>
+<section>
+  <h2 class="mt-4 font-bold text-3xl mb-1">Highly Rated Games</h2>
+  <div class="overflow-x-auto w-11/12">
+    <div class="w-max pb-5">
+      {% for game in highly_rated_games %}
+
+      <a class="relative inline-block" href="/game/{{ game.id }}">
+        <img
+          loading="lazy"
+          src="{{ game.cover_img_url }}"
+          alt="{{ game.cover_img_alt }}"
+          class="rounded-md inline-block"
+        />{% if game.esrb_img_url %}
+        <img
+          class="inline-block absolute right-1 bottom-1"
+          src="{{ game.esrb_img_url }}"
+          alt="{{ game.esrb_img_alt }}"
+        />
+        {% else %}
+        <img
+          class="inline w-[60px] h-[91px] absolute right-1 bottom-1"
+          src="https://www.esrb.org/wp-content/uploads/2019/05/RP.svg"
+          alt="Rating Pending"
+        />
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock content %}

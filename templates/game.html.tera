@@ -1,4 +1,4 @@
-{% extends "base" %} {% block title %}{{ title }}{% endblock title %} {% block
+{% extends "base" %} {% block title %}{{ title }} - {% endblock title %} {% block
 content %}
 <div class="w-11/12 mx-auto mt-4">
   <div class="flex w-11/12 gap-20 justify-around">

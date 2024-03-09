@@ -1,5 +1,6 @@
 mod api_helpers;
 mod auth;
+mod browse;
 mod game;
 mod review;
 mod search;
@@ -13,6 +14,7 @@ use auth::{
     already_auth_login, already_auth_signup, login, login_ui, logout, logout_ui, logout_ui_no_auth,
     signup, signup_ui,
 };
+use browse::browse_ui;
 use env_logger::Env;
 use game::game_ui;
 use reqwest::header;
@@ -58,23 +60,7 @@ async fn rocket() -> _ {
     let client_secret = std::env::var("CLIENT_SECRET").expect("Couldn't find Client Secret");
     let assets_server = FileServer::from("assets");
     let auth_token = std::env::var("AUTH_TOKEN").expect("Couldn't find AUTH token");
-    // let client = reqwest::ClientBuilder::new()
-    //     .danger_accept_invalid_certs(true)
-    //     .build()
-    //     .unwrap();
-    // let response = client
-    //     .post("https://id.twitch.tv/oauth2/token")
-    //     .query(&[
-    //         ("client_id", &client_id),
-    //         ("client_secret", &client_secret),
-    //         ("grant_type", &"client_credentials".to_string()),
-    //     ])
-    //     .send()
-    //     .await
-    //     .expect("Wasn't able to retrieve access token")
-    //     .json::<IGDBAuth>()
-    //     .await
-    //     .expect("Couldn't parse access response");
+
     let mut headers = header::HeaderMap::new();
     headers.insert(
         "Client-ID",
@@ -108,7 +94,8 @@ async fn rocket() -> _ {
         review_ui,
         save_review,
         review_auth_response,
-        advanced_search
+        advanced_search,
+        browse_ui
     ];
     rocket::build()
         .mount("/", routes)
