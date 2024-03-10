@@ -1,0 +1,15 @@
+meta {
+  name: Stuff
+  type: http
+  seq: 1
+}
+
+post {
+  url: https://api.igdb.com/v4/games
+  body: text
+  auth: none
+}
+
+body:text {
+  search "zelda";
+}
