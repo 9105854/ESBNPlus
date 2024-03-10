@@ -192,7 +192,7 @@ pub async fn signup(
     let password_hash = argon2
         .hash_password(signup.password.as_bytes(), &salt)?
         .to_string();
-    sqlx::query!("INSERT INTO users (userId, email, username, password, genrePreferences) VALUES (?, ?, ?, ?, ?)", uuid, signup.email, signup.username, password_hash, genre_pref).execute(&sqlite_state.pool).await?;
+    sqlx::query("INSERT INTO users (userId, email, username, password, genrePreferences) VALUES (?, ?, ?, ?, ?)").bind( &uuid).bind( &signup.email).bind( &signup.username).bind( &password_hash).bind( &genre_pref).execute(&sqlite_state.pool).await?;
     // private cookies cannot be inspected, tampered with, or manufactured by clients
     cookies.add_private(("user_id", uuid));
 

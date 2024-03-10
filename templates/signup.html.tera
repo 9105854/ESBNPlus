@@ -27,55 +27,106 @@ content %}
       id="password"
       required
     />
-    <div>
-
-    <legend for="genrePreferences"></legend>
-    <span class="text-xl" >
-      Favourite Genres (At least 3)
-    </span>
-    </legend>
-    <div class="grid grid-cols-2">
-
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8" type="checkbox" name="genrePreferences" id="action" value="action" />
-    <label class="text-lg" for="action">Action</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 "
-      type="checkbox"
-      name="genrePreferences"
-      id="adventure"
-      value="adventure"
-    />
-    <label class="text-lg" for="adventure">Adventure</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 " type="checkbox" name="genrePreferences" id="puzzle" value="puzzle" />
-    <label class="text-lg" for="puzzle">Puzzle</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 "
-      type="checkbox"
-      name="genrePreferences"
-      id="platformer"
-      value="platformer"
-    />
-    <label class="text-lg" for="platformer">Platformer</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 " type="checkbox" name="genrePreferences" id="horror" value="horror" />
-    <label class="text-lg" for="horror">Horror</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 " type="checkbox" name="genrePreferences" id="family" value="family" />
-    <label class="text-lg" for="family">Family</label> <br>
-    </div>
-    <div class="flex gap-3 my-2">
-    <input class="accent-emerald-500 w-8 h-8 " type="checkbox" name="genrePreferences" id="casual" value="casual" />
-    <label class="text-lg" for="casual">Casual</label> <br>
-    </div>
-    </div>
-    </div>
+    <fieldset>
+      <legend for="genrePreferences">
+        <span class="text-xl"> Favourite Genres (At least 3) </span>
+      </legend>
+      <div class="grid grid-cols-2">
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="adventure"
+            value="adventure"
+          />
+          <label class="text-lg" for="adventure">adventure</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="indie"
+            value="indie"
+          />
+          <label class="text-lg" for="indie">indie</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="music"
+            value="music"
+          />
+          <label class="text-lg" for="music">music</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="platform"
+            value="platform"
+          />
+          <label class="text-lg" for="platform">Platform</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="racing"
+            value="racing"
+          />
+          <label class="text-lg" for="racing">racing</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="role-playing-rpg"
+            value="role-playing-rpg"
+          />
+          <label class="text-lg" for="role-playing-rpg"
+            >Role-playing (RPG)</label
+          >
+          <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="shooter"
+            value="shooter"
+          />
+          <label class="text-lg" for="shooter">shooter</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="sport"
+            value="sport"
+          />
+          <label class="text-lg" for="sport">sport</label> <br />
+        </div>
+        <div class="flex gap-3 my-2">
+          <input
+            class="accent-emerald-500 w-8 h-8"
+            type="checkbox"
+            name="genrePreferences"
+            id="strategy"
+            value="strategy"
+          />
+          <label class="text-lg" for="strategy">strategy</label> <br />
+        </div>
+      </div>
+    </fieldset>
     <!-- <select
       class="w-full h-28"
       id="genrePreferences"
@@ -90,7 +141,12 @@ content %}
       <option value="family">Family</option>
       <option value="casual"></option>
     </select> -->
-    <button  class="w-full border-2 rounded-lg border-emerald-700 bg-emerald-200 hover:bg-emerald-300 py-2  font-bold" type="submit">Sign Up</button>
+    <button
+      class="w-full border-2 rounded-lg border-emerald-700 bg-emerald-200 hover:bg-emerald-300 py-2 font-bold"
+      type="submit"
+    >
+      Sign Up
+    </button>
     <div id="response"></div>
   </form>
   {% endblock content %}

@@ -11,5 +11,5 @@ post {
 }
 
 body:text {
-  search "zelda";
+  limit 30; sort first_release_date desc; fields name, genres.slug; where aggregated_rating_count > 5 & genres.slug = "adventure";
 }

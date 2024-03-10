@@ -1,0 +1,15 @@
+meta {
+  name: Genres
+  type: http
+  seq: 2
+}
+
+post {
+  url: https://api.igdb.com/v4/genres
+  body: text
+  auth: none
+}
+
+body:text {
+  fields name, slug; limit 500; sort name;
+}

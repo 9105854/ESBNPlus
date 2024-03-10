@@ -1,2 +1,6 @@
 [debug]
 address = "0.0.0.0"
+[default]
+address = "0.0.0.0"
+port = 8040
+secret_key = "kw/twi+dP1expX+QwBt2LoCBwnKXZjHFRKABF7055d0="

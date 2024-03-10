@@ -114,7 +114,23 @@ impl<'r> FromFormField<'r> for NaiveDateForm {
         }
     }
 }
-
+pub fn genre_slug_to_name(mut slug: String) -> String {
+    if slug != "role-playing-rpg" {
+        let name: String = slug
+            .char_indices()
+            .map(|(i, c)| {
+                if i == 0 {
+                    c.to_uppercase().next().unwrap()
+                } else {
+                    c
+                }
+            })
+            .collect();
+        return name;
+    } else {
+        "Role Playing (RPG)".to_string()
+    }
+}
 #[cfg(test)]
 mod tests {
     use super::*;

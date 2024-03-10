@@ -24,7 +24,7 @@ use rocket::http::CookieJar;
 use rocket_dyn_templates::{context, Template};
 use search::{advanced_search, base_search_ui, hx_search, simple_search};
 use serde::Deserialize;
-use sqlx::{sqlite::SqlitePoolOptions, SqlitePool};
+use sqlx::{migrate::MigrateDatabase, sqlite::SqlitePoolOptions, Sqlite, SqlitePool};
 use utils::AppError;
 
 pub struct SqliteState {
@@ -49,12 +49,25 @@ struct IGDBAuth {
 async fn rocket() -> _ {
     env_logger::Builder::from_env(Env::default().default_filter_or("info")).init();
     log::info!("Starting");
+    if !Sqlite::database_exists("sqlite:data.db")
+        .await
+        .unwrap_or(false)
+    {
+        warn!("Database doesn't existing. Creating now...");
+        Sqlite::create_database("sqlite:data.db")
+            .await
+            .expect("Couldn't create db");
+    }
     let pool = SqlitePoolOptions::new()
         .max_connections(5)
         .acquire_timeout(Duration::from_secs(3))
         .connect("sqlite:data.db")
         .await
         .expect("Couldn't connect to db");
+    sqlx::migrate!("./migrations")
+        .run(&pool)
+        .await
+        .expect("Couldn't migrate db");
     dotenvy::dotenv().expect("Couldn't load .env file");
     let client_id = std::env::var("CLIENT_ID").expect("Couldn't find Client ID");
     let client_secret = std::env::var("CLIENT_SECRET").expect("Couldn't find Client Secret");

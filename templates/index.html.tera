@@ -1,7 +1,7 @@
 {% extends "base" %} {% block title %}Home - {% endblock title %} {% block
 content %}
-<div>
-  <div>
+<div class="h-screen flex items-center w-full justify-center">
+  <div >
     <h1
       class="text-9xl font-extrabold text-center hover:scale-105 transition-all ease-in-out duration-200"
     >
