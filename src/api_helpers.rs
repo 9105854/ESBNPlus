@@ -2,17 +2,14 @@ use chrono::prelude::*;
 use serde::Deserialize;
 
 use crate::utils::ESRBRating;
-pub fn process_release_year(input: Option<i64>) -> String {
+pub fn process_release_year(input: Option<i64>) -> Option<i32> {
     if let Some(release_year) = input {
         let parsed_date = chrono::DateTime::from_timestamp(release_year, 0);
         if let Some(parsed_date) = parsed_date {
-            parsed_date.year().to_string()
-        } else {
-            "N/A".to_string()
+            return Some(parsed_date.year());
         }
-    } else {
-        "N/A".to_string()
     }
+    None
 }
 
 pub fn process_rating(input: Option<f32>) -> String {

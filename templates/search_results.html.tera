@@ -31,7 +31,8 @@
       <div>
         <p>
           Release Year
-          <span class="font-bold block">{{ game.release_year }}</span>
+          <span class="font-bold block">{% if game.release_year %}{{ game.release_year }}{% else %}N/A{% endif
+                %}</span>
         </p>
       </div>
     </div>
