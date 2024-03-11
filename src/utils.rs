@@ -139,4 +139,9 @@ mod tests {
         let rating = ESRBRating::Everyone10;
         assert_eq!(rating.to_string(), "Everyone 10+".to_string())
     }
+    #[test]
+    fn round() {
+        let number = 3.29999;
+        assert_eq!(3.3, round_1(number))
+    }
 }

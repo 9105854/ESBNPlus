@@ -105,7 +105,7 @@ content %}
       <p class="text-center">
         Enjoyability
         <span class="font-bold text-xl block"
-          >{{ user_metrics.enjoyability }}/5</span
+          >{{ user_metrics.enjoyability | round(method="common", precision=2) }}/5</span
         >
       </p>
     </div>
@@ -113,7 +113,7 @@ content %}
       <p class="text-center">
         Educational Value
         <span class="font-bold text-xl block"
-          >{{ user_metrics.educational_value }}/5</span
+          >{{ user_metrics.educational_value | round(method="common", precision=2) }}/5</span
         >
       </p>
     </div>
@@ -121,7 +121,7 @@ content %}
       <p class="text-center">
         Replayability
         <span class="font-bold text-xl block"
-          >{{ user_metrics.replayability }}/5</span
+          >{{ user_metrics.replayability | round(method="common", precision=2) }}/5</span
         >
       </p>
     </div>
@@ -129,7 +129,7 @@ content %}
       <p class="text-center">
         Usability
         <span class="font-bold text-xl block"
-          >{{ user_metrics.usability }}/5</span
+          >{{ user_metrics.usability | round(method="common", precision=2) }}/5</span
         >
       </p>
     </div>

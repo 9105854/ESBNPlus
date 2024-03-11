@@ -30,7 +30,7 @@
   </head>
   <body hx-boost="true" class="grid grid-cols-8 gap-4">
     <nav
-      class="px-2 mx-auto h-screen border-r-4 border-r-emerald-500 rounded-lg sticky top-0"
+      class="px-2 mx-auto h-screen border-r-4 border-r-emerald-500 rounded-lg sticky top-0 bg-stone-100"
     >
       <div class="w-10/12 h-full mx-auto grid grid-rows-3 justify-between">
         <a href="/" class="text-3xl text-center pt-4 font-bold">ESRB Plus</a>

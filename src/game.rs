@@ -176,9 +176,9 @@ pub async fn game_logic(
     let user_metrics = if user_metrics_from_db.is_empty() {
         None
     } else {
-        let mut user_metrics = user_metrics_from_db[0];
-        user_metrics.round();
-        Some(user_metrics)
+        dbg!(&user_metrics_from_db[0]);
+        dbg!(&user_metrics_from_db[0].rounded());
+        Some(user_metrics_from_db[0].rounded())
     };
 
     let written_reviews: Vec<WrittenReview> = sqlx::query_as(
@@ -254,10 +254,17 @@ pub struct UserMetrics {
     pub usability: f32,
 }
 impl UserMetrics {
-    fn round(&mut self) {
-        self.enjoyability = round_1(self.enjoyability);
-        self.educational_value = round_1(self.educational_value);
-        self.replayability = round_1(self.educational_value);
-        self.usability = round_1(self.usability);
+    fn rounded(&self) -> Self {
+        let enjoyability = round_1(self.enjoyability);
+        let educational_value = round_1(self.educational_value);
+        let replayability = round_1(self.replayability);
+        let usability = round_1(self.usability);
+
+        Self {
+            enjoyability,
+            educational_value,
+            replayability,
+            usability,
+        }
     }
 }

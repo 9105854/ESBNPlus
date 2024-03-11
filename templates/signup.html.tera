@@ -141,6 +141,14 @@ content %}
       <option value="family">Family</option>
       <option value="casual"></option>
     </select> -->
+    <p class="mb-1">
+      By signing up, you accept the
+      <a
+        class="hover:underline text-emerald-700"
+        href="https://www.esrb.org/privacy-statement/"
+        >privacy policy.</a
+      >
+    </p>
     <button
       class="w-full border-2 rounded-lg border-emerald-700 bg-emerald-200 hover:bg-emerald-300 py-2 font-bold"
       type="submit"
@@ -149,5 +157,6 @@ content %}
     </button>
     <div id="response"></div>
   </form>
+
   {% endblock content %}
 </div>
