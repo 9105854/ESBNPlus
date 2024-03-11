@@ -5,7 +5,28 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="/assets/main.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/assets/woods.png" type="image/x-icon" />
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script>
+      window.addEventListener("htmx:afterSettle", (event) => {
+        const path = window.location.pathname;
+        if (path === "/") {
+          document.getElementById("home").classList.add("font-bold");
+        } else if (path === "/browse") {
+          document.getElementById("browse").classList.add("font-bold");
+        } else if (path === "/auth/login") {
+          document.getElementById("login").classList.add("font-bold");
+        }
+      });
+      window.addEventListener("load", (event) => {
+        const path = window.location.pathname;
+        if (path === "/") {
+          document.getElementById("home").classList.add("font-bold");
+        } else if (path === "/browse") {
+          document.getElementById("browse").classList.add("font-bold");
+        }
+      });
+    </script>
   </head>
   <body hx-boost="true" class="grid grid-cols-8 gap-4">
     <nav
@@ -16,8 +37,10 @@
         <ul
           class="text-emerald-800 text-xl flex flex-col justify-center gap-y-3"
         >
-          <li><a href="/" class="hover:underline">Home</a></li>
-          <li><a href="/browse" class="hover:underline">Browse</a></li>
+          <li><a href="/" class="hover:underline" id="home">Home</a></li>
+          <li>
+            <a href="/browse" class="hover:underline" id="browse">Browse</a>
+          </li>
           <form action="/search" method="GET">
             <input
               type="text"
@@ -37,6 +60,7 @@
           <a
             href="/auth/login"
             class="text-emerald-800 text-xl hover:underline absolute bottom-5"
+            id="login"
             >Log In</a
           >
           {% endif %}

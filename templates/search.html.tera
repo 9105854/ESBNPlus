@@ -11,27 +11,36 @@ content %}
 </script>
 <div class="mx-auto w-1/2 mt-8">
   <label for="simpleSearch"><h1 class="font-bold text-3xl">Search</h1></label>
-  <input
-    hx-get="/search"
-    hx-target="#results"
-    hx-push-url="true"
-    hx-trigger="input changed delay:500ms, search, q"
-    type="text"
-    name="q"
-    value="{{ query }}"
-    id="simpleQuery"
-    oninput="updateAdvanced(this.value)"
-    class="border-2 rounded-lg border-emerald-700 w-full pl-2 py-1 text-xl mt-3"
-  />
-  <img
-    class="hidden htmx-request:visible"
-    src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg"
-    alt="Loading icon"
-  />
+  <div class="relative w-full">
+    <input
+      hx-get="/search"
+      hx-target="#results"
+      hx-push-url="true"
+      hx-trigger="input changed delay:500ms, search, q"
+      hx-indicator="#loader"
+      type="text"
+      name="q"
+      value="{{ query }}"
+      id="simpleQuery"
+      oninput="updateAdvanced(this.value)"
+      autocomplete="false"
+      class="border-2 rounded-lg border-emerald-700 w-full pl-2 py-1 text-xl mt-3"
+    />
+    <img
+      id="loader"
+      class="htmx-indicator h-10 absolute right-1 top-3"
+      src="/assets/fade-stagger-circles.svg"
+      alt="Loading icon"
+    />
+  </div>
   <details>
     <summary class="text-lg">Advanced Search</summary>
     <div>
-      <form hx-post="/search/advanced" hx-target="#results">
+      <form
+        hx-post="/search/advanced"
+        hx-target="#results"
+        hx-indicator="#loader"
+      >
         <input
           hidden
           type="text"
@@ -241,7 +250,12 @@ content %}
           <label for="dateTo">To</label>
           <input type="date" id="dateTo" name="dateTo" />
         </fieldset>
-        <button type="submit" class="border">Search</button>
+        <button
+          type="submit"
+          class="w-full border-2 rounded-lg border-emerald-700 bg-emerald-200 hover:bg-emerald-300 py-2 mt-1 font-bold"
+        >
+          Search
+        </button>
       </form>
     </div>
   </details>

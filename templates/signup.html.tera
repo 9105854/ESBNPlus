@@ -40,7 +40,7 @@ content %}
             id="adventure"
             value="adventure"
           />
-          <label class="text-lg" for="adventure">adventure</label> <br />
+          <label class="text-lg" for="adventure">Adventure</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -50,7 +50,7 @@ content %}
             id="indie"
             value="indie"
           />
-          <label class="text-lg" for="indie">indie</label> <br />
+          <label class="text-lg" for="indie">Indie</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -60,7 +60,7 @@ content %}
             id="music"
             value="music"
           />
-          <label class="text-lg" for="music">music</label> <br />
+          <label class="text-lg" for="music">Music</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -80,7 +80,7 @@ content %}
             id="racing"
             value="racing"
           />
-          <label class="text-lg" for="racing">racing</label> <br />
+          <label class="text-lg" for="racing">Racing</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -103,7 +103,7 @@ content %}
             id="shooter"
             value="shooter"
           />
-          <label class="text-lg" for="shooter">shooter</label> <br />
+          <label class="text-lg" for="shooter">Shooter</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -113,7 +113,7 @@ content %}
             id="sport"
             value="sport"
           />
-          <label class="text-lg" for="sport">sport</label> <br />
+          <label class="text-lg" for="sport">Sport</label> <br />
         </div>
         <div class="flex gap-3 my-2">
           <input
@@ -123,7 +123,7 @@ content %}
             id="strategy"
             value="strategy"
           />
-          <label class="text-lg" for="strategy">strategy</label> <br />
+          <label class="text-lg" for="strategy">Strategy</label> <br />
         </div>
       </div>
     </fieldset>
