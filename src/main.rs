@@ -84,6 +84,7 @@ async fn rocket() -> _ {
         header::AUTHORIZATION,
         header::HeaderValue::from_str(&auth_header).unwrap(),
     );
+
     info!("{:?}", headers.values());
     let client = reqwest::ClientBuilder::new()
         .default_headers(headers)
