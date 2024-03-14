@@ -5,7 +5,6 @@ use argon2::{
     password_hash::{rand_core::OsRng, SaltString},
     Argon2, PasswordHash, PasswordHasher, PasswordVerifier,
 };
-use rocket::http::{CookieJar, Status};
 use rocket::{
     form::Form,
     request::{self, FromRequest},
@@ -13,6 +12,10 @@ use rocket::{
     Request,
 };
 use rocket::{http::Header, request::Outcome};
+use rocket::{
+    http::{CookieJar, Status},
+    response::content::RawHtml,
+};
 use rocket::{Route, State};
 use rocket_dyn_templates::context;
 use rocket_dyn_templates::Template;
@@ -146,7 +149,7 @@ pub async fn signup(
     signup: Form<SignUp>,
     sqlite_state: &State<SqliteState>,
     cookies: &CookieJar<'_>,
-) -> Result<AuthResponder, AppError> {
+) -> Result<(Status, RawHtml<String>), AppError> {
     // validation
     let mut is_error = false;
     let mut errors = "".to_string();
@@ -156,7 +159,7 @@ pub async fn signup(
         .await?;
     if !existing_email.is_empty() {
         errors.push_str(
-            "<span>Email already exists! Log in <a href=\"/auth/login\">here.</a></span>",
+            "<p>Email already exists! Log in <a class=\"text-emerald-700 hover:underline\" href=\"/auth/login\">here</a>.</p>",
         );
         is_error = true;
     }
@@ -167,23 +170,23 @@ pub async fn signup(
             .await?;
 
     if !existing_username.is_empty() {
-        errors.push_str("<span>Username already exists!</span>");
+        errors.push_str("<p>Username already exists! </p>");
         is_error = true;
     }
     if signup.genre_preferences.len() < 3 {
-        errors.push_str("<span>Please select at least 3 preferences</span>");
+        errors.push_str("<p>Please select at least 3 preferences. </p>");
         is_error = true;
     }
 
-    let error_response = AuthResponder {
-        inner: errors,
-        hx_retarget: Header {
-            name: "HX-Retarget".into(),
-            value: "#response".into(),
-        },
-    };
+    // let error_response = AuthResponder {
+    //     inner: errors,
+    //     hx_retarget: Header {
+    //         name: "HX-Retarget".into(),
+    //         value: "#response".into(),
+    //     },
+    // };
     if is_error {
-        return Ok(error_response);
+        return Ok((Status::ImATeapot, RawHtml(errors)));
     }
     let uuid = uuid::Uuid::new_v4().to_string();
     let genre_pref = serde_json::to_string(&signup.genre_preferences)?;
@@ -196,14 +199,19 @@ pub async fn signup(
     // private cookies cannot be inspected, tampered with, or manufactured by clients
     cookies.add_private(("user_id", uuid));
 
-    let success = AuthResponder {
-        inner: "Signed Up! Go to <a href=\"/browse\"> browse</a>".into(),
-        hx_retarget: Header {
-            name: "HX-Retarget".into(),
-            value: "this".into(),
-        },
-    };
-    Ok(success)
+    // let success = AuthResponder {
+    //     inner: "Signed Up! Go to <a href=\"/browse\"> browse</a>".into(),
+    //     hx_retarget: Header {
+    //         name: "HX-Retarget".into(),
+    //         value: "this".into(),
+    //     },
+    // };
+    Ok((
+        Status::Ok,
+        RawHtml(
+            r#"Signed Up! Go to <a class="text-emerald-700 hover:underline" hx-boost="false" href="/browse"> browse</a>"#.to_string(),
+        ),
+    ))
 }
 
 #[delete("/auth/logout")]
